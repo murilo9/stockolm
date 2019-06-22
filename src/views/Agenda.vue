@@ -8,11 +8,14 @@
         </span>
       </p>
       <p v-for="(week, wd) in month.weeks" :key="wd" class="week">
-        <span v-for="(day, d) in week" :key="d" class="week-day" :class="{'hide': !day.day}">
+        <a href='#' 
+        v-for="(day, d) in week" 
+        :key="d" class="week-day" 
+        :class="{'hide': !day.day, 'today': day.isToday}">
           <template v-if="day.day">
             {{day.day}}
           </template>
-        </span>
+        </a>
       </p>
     </div>
   </div>
@@ -118,6 +121,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a{
+  color: inherit;
+}
 p{
   margin: 0;
 }
@@ -141,6 +147,10 @@ p{
           border-radius: 3px;
           &.hide{
             border: none;
+          }
+          &.today{
+            border: 2px solid red;
+            border-radius: 1em;
           }
         }
     }
