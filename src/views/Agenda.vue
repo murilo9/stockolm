@@ -1,37 +1,30 @@
 <template>
   <div class="agenda">
     <div v-for="(month, m) in calendar.years[0].months" :key="m" class="month">
+      <a v-if="month.actual" id="month"></a>
       <p>{{month.name}}</p>
       <p class="week">
-        <span v-for="(weekLabel, l) in calendar.weekLabels" :key="l" class="week-day hide">
-          {{weekLabel}}
-        </span>
+        <WeekDay v-for="(weekLabel, l) in calendar.weekLabels"
+        :key="l"
+        :day="weekLabel" />
       </p>
       <p v-for="(week, wd) in month.weeks" :key="wd" class="week">
-        <a href='#' 
-        v-for="(day, d) in week" 
-        :key="d" class="week-day" 
-        :class="{'hide': !day.day, 'today': day.isToday, 'tasks': day.task}">
-          <template v-if="day.day">
-            <p class="number">{{day.day}}</p>
-            <p class="tasks-qty">
-              <template v-if="day.task">
-                {{day.task.tasks}}
-              </template>
-            </p>
-          </template>
-        </a>
+        <WeekDay v-for="(day, d) in week" 
+        :key="d"
+        :day="day" />
       </p>
     </div>
   </div>
 </template>
 
 <script>
+import WeekDay from '../components/WeekDay.vue';
+
 var data = function(){
   return {
     calendar: {
       weekLabels: [
-        "dom", "seg", "ter", "qua", "qui", "sex", "sab"
+        {l:"dom"}, {l:"seg"}, {l:"ter"}, {l:"qua"}, {l:"qui"}, {l:"sex"}, {l:"sab"}
       ],
       years: [
         {
@@ -92,6 +85,7 @@ var methods ={
     for(var monthIndex = 0; monthIndex < 12; monthIndex++){
       var month = {
         dispExtend: false,
+        actual: false,
         weeks: []
       }
       switch (monthIndex+1){
@@ -107,6 +101,10 @@ var methods ={
         case 10: month.name = "Outubro"; break;
         case 11: month.name = "Novembro"; break;
         case 12: month.name = "Dezembro"; break;
+      }
+      //Se o mês for o atual, marca ele:
+      if(monthIndex == today.getMonth()){
+        month.actual = true;
       }
       //Cria as 6 semanas do mês:
       for(var w = 0; w < 6; w++){
@@ -210,12 +208,20 @@ var methods ={
       //Insere o mês criado dentro do ano:
       this.$data.calendar.years[0].months.push(month);
     }
+  },
+  scrollToMonth: function(){
+    document.getElementById('month');
   }
+}
+
+var components = {
+  WeekDay
 }
 
 export default {
   data: data,
   methods: methods,
+  components: components,
   created(){
     this.generateCalendar();
   }
@@ -238,36 +244,7 @@ p{
   .month{
     .week{
       display: flex;
-      .week-day{
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          justify-content: flex-end;
-          width: 3em;
-          height: 3em;
-          margin: 0.1em;
-          border: 1px solid #999;
-          border-radius: 3px;
-          &.hide{
-            border: none;
-          }
-          &.today{
-            border: 2px solid red !important;
-            border-radius: 2em;
-          }
-          &.tasks{
-            background: hsl(140, 50%, 50%);
-            color: white;
-            border: none;
-          }
-          .number{
-            height: 40%;;
-          }
-          .tasks-qty{
-            height: 30%;
-            font-size: 0.8em;
-          }
-        }
+      
     }
   }
 }

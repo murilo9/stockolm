@@ -9,6 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/agenda',
+    },
+    {
+      path: '/agenda',
       name: 'agenda',
       component: Agenda
     },
@@ -17,5 +21,14 @@ export default new Router({
       name: 'tarefas',
       component: Tarefas
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+		if (to.hash) {
+			return { selector: to.hash }
+		} else if (savedPosition) {
+    		return savedPosition;
+    	} else {
+			return { x: 0, y: 0 }
+		}
+	}
 })
