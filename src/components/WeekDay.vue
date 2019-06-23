@@ -39,6 +39,9 @@ export default {
 
 <style lang="scss" scoped>
     .week-day{
+        p{
+            margin: 0
+        }
         display: flex;
         flex-direction: column;
         align-items: stretch;

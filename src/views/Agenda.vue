@@ -1,5 +1,6 @@
 <template>
   <div class="agenda">
+    <h1>Agenda</h1>
     <div v-for="(month, m) in calendar.years[0].months" :key="m" class="month">
       <a v-if="month.actual" id="month"></a>
       <p>{{month.name}}</p>
@@ -242,6 +243,8 @@ p{
   align-items: center;
   color: #444;
   .month{
+    border-top: 1px solid #777;
+    padding: 1em 0;
     .week{
       display: flex;
       
