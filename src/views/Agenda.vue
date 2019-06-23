@@ -11,9 +11,14 @@
         <a href='#' 
         v-for="(day, d) in week" 
         :key="d" class="week-day" 
-        :class="{'hide': !day.day, 'today': day.isToday}">
+        :class="{'hide': !day.day, 'today': day.isToday, 'tasks': day.task}">
           <template v-if="day.day">
-            {{day.day}}
+            <p class="number">{{day.day}}</p>
+            <p class="tasks-qty">
+              <template v-if="day.task">
+                {{day.task.tasks}}
+              </template>
+            </p>
           </template>
         </a>
       </p>
@@ -35,7 +40,44 @@ var data = function(){
           months: []
         }
       ]
-    }
+    },
+    tasks: [
+      {
+        title: 'Programar site do Stockolm',
+        startDate: new Date('July 01, 2019'),
+        endDate: undefined,
+        priority: 1,
+        status: 0
+      },
+      {
+        title: 'Programar o sistema do Stockolm',
+        startDate: undefined,
+        endDate: undefined,
+        priority: 1,
+        status: 1
+      },
+      {
+        title: 'Fazer coisa que começa e termina no mesmo dia',
+        startDate: new Date('June 22, 2019'),
+        endDate: new Date('June 22, 2019'),
+        priority: 1,
+        status: 1
+      },
+      {
+        title: 'Fazer fucking tarefa de libras',
+        startDate: new Date('June 28, 2019'),
+        endDate: new Date('June 28, 2019'),
+        priority: 3,
+        status: 0
+      },
+      {
+        title: 'Estudar libras',
+        startDate: undefined,
+        endDate: new Date('June 28, 2019'),
+        priority: 2,
+        status: 0
+      }
+    ]
   }
 }
 
@@ -72,7 +114,7 @@ var methods ={
         //Cria os 7 dias da semana
         for(var wd = 0; wd < 7; wd++){
           var weekDay = {
-            weekEnd: false
+            weekEnd: false,
           };
           switch(baseDate.getDay()){
             case 0: weekDay.weekDayName = "dom"; weekDay.weekEnd = true; break;
@@ -89,8 +131,68 @@ var methods ={
               weekDay.day = baseDate.getDate();
               weekDay.id = dayFullYearCounter;
               dayFullYearCounter++;
-              //Verifica se o dia possui tarefas:
-
+              weekDay.task = false;   //A princípio, o dia não tem tarefas
+              //Verifica se o dia possui tarefas (percorre o array de tarefas):
+              this.$data.tasks.forEach(function(task, t){
+                //Se a tarefa inicia e começa no mesmo dia
+                if(task.startDate && task.endDate &&
+                task.startDate.getFullYear() == task.endDate.getFullYear() &&
+                task.startDate.getMonth() == task.endDate.getMonth() &&
+                task.startDate.getDate() == task.endDate.getDate()){ 
+                  //E se for hoje:  
+                  if(task.endDate.getFullYear() == baseDate.getFullYear() &&
+                  task.endDate.getMonth() == baseDate.getMonth() &&
+                  task.endDate.getDate() == baseDate.getDate()){
+                    if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
+                        weekDay.task = {  //Insere o objeto de task
+                        tasks: 0,
+                        priority: 0
+                      }
+                    }
+                    //Incrementa o número de tarefas:
+                    weekDay.task.tasks += 1;
+                    //Define a prioridade das tarefas do dia:
+                    if(task.priority > weekDay.task.priority)
+                      weekDay.task.priority = task.priority;
+                  }
+                }
+                //Se a tarefa termina neste dia:
+                else if(task.endDate){    
+                  if(task.endDate.getFullYear() == baseDate.getFullYear() &&
+                  task.endDate.getMonth() == baseDate.getMonth() &&
+                  task.endDate.getDate() == baseDate.getDate()){
+                    if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
+                        weekDay.task = {  //Insere o objeto de task
+                        tasks: 0,
+                        priority: 0
+                      }
+                    }
+                    //Incrementa o número de tarefas:
+                    weekDay.task.tasks++;
+                    //Define a prioridade das tarefas do dia:
+                    if(task.priority > weekDay.task.priority)
+                      weekDay.task.priority = task.priority;
+                  }
+                }
+                //Se a tarefa começa neste dia:
+                else if(task.startDate){    
+                  if(task.startDate.getFullYear() == baseDate.getFullYear() &&
+                  task.startDate.getMonth() == baseDate.getMonth() &&
+                  task.startDate.getDate() == baseDate.getDate()){
+                    if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
+                        weekDay.task = {  //Insere o objeto de task
+                        tasks: 0,
+                        priority: 0
+                      }
+                    }
+                    //Incrementa o número de tarefas:
+                    weekDay.task.tasks++;
+                    //Define a prioridade das tarefas do dia:
+                    if(task.priority > weekDay.task.priority)
+                      weekDay.task.priority = task.priority;
+                  }
+                }
+              });
               //Verifica se o dia é o atual
               if(baseDate.getDate() == today.getDate() && 
               baseDate.getMonth() == today.getMonth()){
@@ -138,10 +240,11 @@ p{
       display: flex;
       .week-day{
           display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 2em;
-          height: 2em;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: flex-end;
+          width: 3em;
+          height: 3em;
           margin: 0.1em;
           border: 1px solid #999;
           border-radius: 3px;
@@ -149,8 +252,20 @@ p{
             border: none;
           }
           &.today{
-            border: 2px solid red;
-            border-radius: 1em;
+            border: 2px solid red !important;
+            border-radius: 2em;
+          }
+          &.tasks{
+            background: hsl(140, 50%, 50%);
+            color: white;
+            border: none;
+          }
+          .number{
+            height: 40%;;
+          }
+          .tasks-qty{
+            height: 30%;
+            font-size: 0.8em;
           }
         }
     }

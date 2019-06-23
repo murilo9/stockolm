@@ -8,8 +8,7 @@ CREATE TABLE tbTasks(
     endDate DATETIME,
     startDateString VARCHAR(64),
     endDateString VARCHAR(64),
-    label VARCHAR(16) NOT NULL,
-    statsModel INT NOT NULL,
+    priorit VARCHAR(16) NOT NULL,
     stats INT NOT NULL,
     PRIMARY KEY (id)
 ) engine = innodb;
