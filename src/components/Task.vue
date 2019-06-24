@@ -101,13 +101,13 @@ export default {
         .priority{
             text-align: center;
             ._1{
-                color: hsl(160, 60%, 50%);
+                color: hsl(200, 60%, 50%);
             }
             ._2{
                 color: hsl(280, 60%, 60%);
             }
             ._3{
-                color: hsl(40, 60%, 50%);
+                color: hsl(50, 60%, 50%);
             }
         }
         .date{

@@ -1,9 +1,9 @@
 <template>
     <a href='#' class="week-day" 
-    :class="{'hide': !day.day, 'today': day.isToday, 'tasks': day.task}">
+    :class="{'hide': !day.day, 'today': day.isToday, 'tasks': day.task, 'weekend': day.weekEnd}">
         <template v-if="day.day">
             <p class="number">{{day.day}}</p>
-            <p class="tasks-qty">
+            <p class="tasks-qty" :class="'_'+day.task.priority">
                 <template v-if="day.task">
                 {{day.task.tasks}}
                 </template>
@@ -44,31 +44,50 @@ export default {
         }
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
         justify-content: flex-end;
         width: 3em;
         height: 3em;
         margin: 0.1em;
-        border: 1px solid #999;
+        border: 1px solid white;
         border-radius: 3px;
+        overflow: hidden;
         &.hide{
             border: none;
+            justify-content: center;
         }
         &.today{
             border: 2px solid red !important;
             border-radius: 2em;
         }
         &.tasks{
-            background: hsl(140, 50%, 50%);
-            color: white;
+            color: hsl(140, 50%, 50%);
+            background: white;
             border: none;
+            .tasks-qty{
+                color: #444;
+                &._1{
+                    color: hsl(200, 100%, 40%);
+                }
+                &._2{
+                    color: hsl(280, 60%, 60%);
+                }
+                &._3{
+                    color: hsl(30, 100%, 50%);
+                }
+            }
+        }
+        &.weekend{
+            color: #444;
         }
         .number{
-            height: 40%;;
+            height: 40%;
+            font-weight: bold;
         }
         .tasks-qty{
             height: 30%;
             font-size: 0.8em;
+            font-weight: bold;
         }
     }
 </style>

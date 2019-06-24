@@ -3,7 +3,7 @@
     <h1>Agenda</h1>
     <div v-for="(month, m) in calendar.years[0].months" :key="m" class="month">
       <a v-if="month.actual" id="month"></a>
-      <p>{{month.name}}</p>
+      <h3>{{month.name}}</h3>
       <p class="week">
         <WeekDay v-for="(weekLabel, l) in calendar.weekLabels"
         :key="l"
@@ -52,8 +52,8 @@ var data = function(){
       },
       {
         title: 'Fazer coisa que começa e termina no mesmo dia',
-        startDate: new Date('June 22, 2019'),
-        endDate: new Date('June 22, 2019'),
+        startDate: new Date('June 23, 2019'),
+        endDate: new Date('June 23, 2019'),
         priority: 1,
         status: 1
       },
@@ -67,8 +67,15 @@ var data = function(){
       {
         title: 'Estudar libras',
         startDate: undefined,
-        endDate: new Date('June 28, 2019'),
+        endDate: new Date('June 27, 2019'),
         priority: 2,
+        status: 0
+      },
+      {
+        title: 'Estudar libras',
+        startDate: undefined,
+        endDate: new Date('June 22, 2019'),
+        priority: 1,
         status: 0
       }
     ]
@@ -230,20 +237,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a{
-  color: inherit;
-}
 p{
   margin: 0;
 }
 .agenda{
+  a{
+    color: inherit;
+  }
   margin: 0 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #444;
+  color: white;
   .month{
-    border-top: 1px solid #777;
+    border-top: 1px solid white;
     padding: 1em 0;
     .week{
       display: flex;
