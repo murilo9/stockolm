@@ -1,14 +1,47 @@
 <template>
     <div class="projects">
-
+        <ProjectViewer 
+        :project="projects[getProjectIndex($route.params.id)]" 
+        v-if="$route.params.id"/>
+        <div class="projects-dashboard" v-else>
+            <div class="project-card" 
+            v-for="(project, p) in projects" 
+            :key="p">
+                <p>{{project.name}}</p>
+                <p>{{project.description}}</p>
+            </div>
+        </div>
     </div>
 </template>
 
+<style lang="scss" scoped>
+
+</style>
+
+
 <script>
+    import ProjectViewer from '../components/ProjectViewer.vue'
+
+    var components = {
+        ProjectViewer
+    }
+
+    var methods = {
+        getProjectIndex(projectId){
+            var indexFound = false
+            this.$data.projects.forEach((project, i) => {
+                if(project.id == projectId)
+                    indexFound = i
+            })
+            return indexFound
+        }
+    }
+
     var data = () => {
         return {
             projects: [
-                {
+                {   
+                    id: 0,
                     name: 'ERP',
                     description: 'Software de gestão empresarial',
                     situation: 'Em definição',
@@ -28,6 +61,7 @@
                     ]
                 },
                 {
+                    id: 1,
                     name: 'Site Petshop',
                     description: 'Site do pethsop',
                     situation: 'Em deploy/teste',
@@ -130,10 +164,8 @@
     }
 
     export default {
-        data: data
+        data: data,
+        components: components,
+        methods: methods
     }
 </script>
-
-<style>
-
-</style>

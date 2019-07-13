@@ -26,6 +26,11 @@ export default new Router({
       path: '/projetos',
       name: 'projetos',
       component: Projetos
+    },
+    {
+      path: '/projetos/:id',
+      name: 'projetos',
+      component: Projetos
     }
   ],
   scrollBehavior(to, from, savedPosition) {

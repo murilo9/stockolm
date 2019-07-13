@@ -17,6 +17,31 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+  .tasks{
+    color: white;
+    margin: 0 20%;
+    .task-list{
+      color: #444;
+      text-align: left;
+      width: 100%;
+      .row{
+        &.header{
+          font-weight: bold;
+          color: white;
+        }
+        .column{
+          text-align: center;
+          padding: 0;
+        }
+        .task-header{
+          text-align: left;
+        }
+      }
+    }
+  }
+</style>
+
 <script>
 import Task from '../components/Task.vue';
 
@@ -103,28 +128,3 @@ export default {
   components: components
 }
 </script>
-
-<style lang="scss" scoped>
-  .tasks{
-    color: white;
-    margin: 0 20%;
-    .task-list{
-      color: #444;
-      text-align: left;
-      width: 100%;
-      .row{
-        &.header{
-          font-weight: bold;
-          color: white;
-        }
-        .column{
-          text-align: center;
-          padding: 0;
-        }
-        .task-header{
-          text-align: left;
-        }
-      }
-    }
-  }
-</style>
