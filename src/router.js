@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Agenda from './views/Agenda.vue'
 import Tarefas from './views/Tarefas.vue'
+import Projetos from './views/Projetos.vue'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/tarefas',
       name: 'tarefas',
       component: Tarefas
+    },
+    {
+      path: '/projetos',
+      name: 'projetos',
+      component: Projetos
     }
   ],
   scrollBehavior(to, from, savedPosition) {

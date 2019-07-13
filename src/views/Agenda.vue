@@ -244,6 +244,9 @@ p{
   a{
     color: inherit;
   }
+  h3{
+    margin-top: 0;
+  }
   margin: 0 20%;
   display: flex;
   flex-direction: column;
@@ -251,7 +254,7 @@ p{
   color: white;
   .month{
     border-top: 1px solid white;
-    padding: 1em 0;
+    padding: 1.5em 0;
     .week{
       display: flex;
       

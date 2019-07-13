@@ -1,39 +1,35 @@
 <template>
-    <tr class="task">
-        <td>
-            <a href='' onclick="event.preventDefault()">
-                <template v-if="task.status == 2">
-                    <i class="circle outline icon"></i>
-                </template>
-                <template v-else-if="task.status == 1">
-                    <i class="check icon"></i>
-                </template>
-                <template v-else>
-                    <i class="ellipsis horizontal icon"></i>
-                </template>
-            </a>
-        </td>
-        <td class="title">
-            <a href='' onclick="event.preventDefault()">
-                {{task.title}}
-            </a>
-        </td>
-        <td class="priority">
-            <a href='' onclick="event.preventDefault()">
-                <i class="circle icon" :class="'_'+task.priority"></i>
-            </a>
-        </td>
-        <td class="date start-date">
-            <a href='' onclick="event.preventDefault()">
-                {{task.startDate ? getStartDate : '-'}}
-            </a>
-        </td>
-        <td class="date end-date">
-            <a href='' onclick="event.preventDefault()">
-                {{task.endDate ? getEndDate : '-'}}
-            </a>
-        </td>
-    </tr>
+    <div class="task row">
+        <a href='' onclick="event.preventDefault()"
+        @click="changeStatus"
+        class="status one wide column">
+            <template v-if="task.status == 2">
+                <i class="circle outline icon"></i>
+            </template>
+            <template v-else-if="task.status == 1">
+                <i class="check icon"></i>
+            </template>
+            <template v-else>
+                <i class="ellipsis horizontal icon"></i>
+            </template>
+        </a>
+        <a href='' onclick="event.preventDefault()"
+        class="title ten wide column">
+            {{task.title}}
+        </a>
+        <a href='' onclick="event.preventDefault()"
+        class="priority one wide column">
+            <i class="circle icon" :class="'_'+task.priority"></i>
+        </a>
+        <a href='' onclick="event.preventDefault()"
+        class="date start-date two wide column">
+            {{task.startDate ? getStartDate : '-'}}
+        </a>
+        <a href='' onclick="event.preventDefault()"
+            class="date end-date two wide column">
+            {{task.endDate ? getEndDate : '-'}}
+        </a>
+    </div>
 </template>
 
 <script>
@@ -78,6 +74,10 @@ var methods = {
             case 12: m = "dez"; break;
         }
         return m;
+    },
+    changeStatus: function(){
+        this.$emit('change-status', this.task.id);
+        console.log(this.task)
     }
 }
 
@@ -94,20 +94,34 @@ export default {
 
 <style lang="scss" scoped>
     .task{
+        background: white;
+        margin-bottom: 0.5em;
+        padding: 0 !important;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
         a{
             color: inherit;
             width: 100%;
+            padding: 0.5em;
+            display: flex !important;
+            align-items: center;
+        }
+        .status{
+            text-align: center;
+            font-size: 1.3em;
         }
         .priority{
             text-align: center;
+            font-size: 1.3em;
             ._1{
-                color: hsl(200, 60%, 50%);
+                color: hsl(140, 60%, 50%);
             }
             ._2{
-                color: hsl(280, 60%, 60%);
+                color: hsl(50, 90%, 50%);
             }
             ._3{
-                color: hsl(50, 60%, 50%);
+                color: hsl(0, 80%, 50%);
             }
         }
         .date{

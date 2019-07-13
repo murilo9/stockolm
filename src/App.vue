@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/agenda#month">Agenda</router-link> |
-      <router-link to="/tarefas">Tarefas</router-link>
+      <router-link to="/tarefas">Tarefas</router-link> |
+      <router-link to="/projetos">Projetos</router-link>
     </div>
     <router-view/>
   </div>

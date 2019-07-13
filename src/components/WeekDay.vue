@@ -67,13 +67,13 @@ export default {
             .tasks-qty{
                 color: #444;
                 &._1{
-                    color: hsl(200, 100%, 40%);
+                color: hsl(170, 60%, 40%);
                 }
                 &._2{
-                    color: hsl(280, 60%, 60%);
+                    color: hsl(50, 90%, 50%);
                 }
                 &._3{
-                    color: hsl(30, 100%, 50%);
+                    color: hsl(0, 80%, 50%);
                 }
             }
         }

@@ -1,14 +1,45 @@
 CREATE DATABASE dbStockolmo;
 USE dbStockolmo;
 
-CREATE TABLE tbTasks(
+CREATE TABLE tbTarefas(
 	id INT AUTO_INCREMENT,
-    title VARCHAR(128) NOT NULL,
-    startDate DATETIME,
-    endDate DATETIME,
-    startDateString VARCHAR(64),
-    endDateString VARCHAR(64),
-    priorit VARCHAR(16) NOT NULL,
-    stats INT NOT NULL,
+    nome VARCHAR(128) NOT NULL,
+    dataInicio DATETIME,
+    dataFim DATETIME,
+    dataInicioString VARCHAR(64),
+    dataFimString VARCHAR(64),
+    prioridade VARCHAR(16) NOT NULL,
+    estado INT NOT NULL,
+    dataFinalizado DATETIME,
+    dataFinalizadoString DATETIME,
     PRIMARY KEY (id)
+) engine = innodb;
+
+CREATE TABLE tbProjects(
+    id INT AUTO_INCREMENT,
+    nome VARCHAR(64) NOT NULL,
+    dataInicio DATETIME,
+    dataFim DATETIME,
+    dataInicioString VARCHAR(64),
+    dataFimString VARCHAR(64),
+    situacao VARCHAR(64),
+    PRIMARY KEY (id)
+) engine = innodb;
+
+CREATE TABLE tbProjetoTarefas(
+    id INT AUTO_INCREMENT,
+    nome VARCHAR(92),
+    projeto INT NOT NULL,
+    dataInicio DATETIME,
+    dataFim DATETIME,
+    dataInicioString VARCHAR(64),
+    dataFimString VARCHAR(64),
+    estado INT NOT NULL,
+    dataFinalizado DATETIME,
+    dataFinalizadoString DATETIME,
+    prioridade INT NOT NULL,
+    tarefaPai INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (projeto) REFERENCES tbProjetos(id)
+    FOREIGN KEY (tarefaPai) REFERENCES tbProjetoTarefas(id)
 ) engine = innodb;
