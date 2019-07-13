@@ -20,7 +20,7 @@
 <script>
 import Task from '../components/Task.vue';
 
-var data = function(){
+var data = () => {
   return {
     tasks: [
       {
@@ -82,13 +82,12 @@ var data = function(){
 }
 
 var methods = {
-  changeStatus: function(taskId){
-    console.log(taskId)
+  changeStatus (taskId){
     this.$data.tasks.forEach(function(task, t){
       if(task.id == taskId){
         task.status++;
         if(task.status == 3)
-          task.status = 0;
+          task.status = 0
       }
     });
   }
