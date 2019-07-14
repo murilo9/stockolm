@@ -4,18 +4,60 @@
         :project="projects[getProjectIndex($route.params.id)]" 
         v-if="$route.params.id"/>
         <div class="projects-dashboard" v-else>
-            <div class="project-card" 
-            v-for="(project, p) in projects" 
-            :key="p">
-                <p>{{project.name}}</p>
-                <p>{{project.description}}</p>
+            <h1 class="fa-center" v-if="projects">Projetos</h1>
+            <h2 v-else>Não há projetos</h2>
+            <div class="projects-list">
+                <div class="project-card" 
+                v-for="(project, p) in projects" 
+                :key="p">
+                    <p class="name">{{project.name}}</p>
+                    <p class="situation">{{project.situation}}</p>
+                    <p class="descri">{{project.description}}</p>
+                    <div class="project-card-details">
+                        <p class="tasks-qty">
+                            {{taskCount(project.tasks)}} tarefas
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-
+    .projects{
+        padding: 0 10%;
+        text-align: left;
+        .projects-dashboard{
+            color: white;
+            .projects-list{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                .project-card{
+                    width: 290px !important;
+                    display: inline-block;
+                    background: white;
+                    color: #16a590;
+                    padding: 1em;
+                    margin: 1em;
+                    box-shadow: 2px 2px 4px #666;
+                    .name{
+                        font-weight: bold;
+                        font-size: 1.2em;
+                        margin-bottom: 0;
+                    }
+                    .situation{
+                        font-size: 0.85em;
+                        margin-bottom: 1.3em;
+                    }
+                }
+            }
+        }
+    }
+    .fa-center{
+        text-align: center;
+    }
 </style>
 
 
@@ -34,6 +76,17 @@
                     indexFound = i
             })
             return indexFound
+        },
+        taskCount(tasks){
+            var qty = 0
+            tasks.forEach((task, i) => {
+                if(task.tasks){
+                    qty += this.taskCount(task.tasks)
+                }
+                else
+                    qty++;
+            })
+            return qty
         }
     }
 
@@ -61,7 +114,7 @@
                     ]
                 },
                 {
-                    id: 1,
+                    id: 3,
                     name: 'Site Petshop',
                     description: 'Site do pethsop',
                     situation: 'Em deploy/teste',

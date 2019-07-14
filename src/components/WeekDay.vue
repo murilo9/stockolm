@@ -1,6 +1,14 @@
 <template>
     <a href='#' class="week-day" 
-    :class="{'hide': !day.day, 'today': day.isToday, 'tasks': day.task, 'weekend': day.weekEnd}">
+    :class="{
+        'hide': !day.day, 
+        'today': day.isToday, 
+        'tasks': day.task, 
+        'weekend': day.weekEnd,
+        '_1': day.task.priority == 1,
+        '_2': day.task.priority == 2,
+        '_3': day.task.priority == 3
+        }">
         <template v-if="day.day">
             <p class="number">{{day.day}}</p>
             <p class="tasks-qty" :class="'_'+day.task.priority">
@@ -61,21 +69,16 @@ export default {
             border-radius: 2em;
         }
         &.tasks{
-            color: hsl(140, 50%, 50%);
-            background: white;
             border: none;
-            .tasks-qty{
-                color: #444;
-                &._1{
-                color: hsl(170, 60%, 40%);
-                }
-                &._2{
-                    color: hsl(50, 90%, 50%);
-                }
-                &._3{
-                    color: hsl(0, 80%, 50%);
-                }
-            }
+        }
+        &._1{
+            background: hsl(140, 70%, 40%);
+        }
+        &._2{
+            background: hsl(50, 90%, 50%);
+        }
+        &._3{
+            background: hsl(0, 80%, 50%);
         }
         &.weekend{
             color: #444;

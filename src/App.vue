@@ -11,10 +11,10 @@
 
 <style lang="scss">
 body{
-  background: hsl(140, 50%, 50%);
+  background: #1ac4aa;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -26,7 +26,7 @@ body{
     font-weight: bold;
     color: #2c3e50;
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
     }
   }
 }

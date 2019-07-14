@@ -18,6 +18,33 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+p{
+  margin: 0;
+}
+.agenda{
+  a{
+    color: inherit;
+  }
+  h3{
+    margin-top: 0;
+  }
+  margin: 0 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  .month{
+    border-top: 1px solid white;
+    padding: 1.5em 0;
+    .week{
+      display: flex;
+      
+    }
+  }
+}
+</style>
+
 <script>
 import WeekDay from '../components/WeekDay.vue';
 
@@ -235,32 +262,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-p{
-  margin: 0;
-}
-.agenda{
-  a{
-    color: inherit;
-  }
-  h3{
-    margin-top: 0;
-  }
-  margin: 0 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  .month{
-    border-top: 1px solid white;
-    padding: 1.5em 0;
-    .week{
-      display: flex;
-      
-    }
-  }
-}
-
-  
-</style>
