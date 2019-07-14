@@ -7,18 +7,29 @@
             <h1 class="fa-center" v-if="projects">Projetos</h1>
             <h2 v-else>Não há projetos</h2>
             <div class="projects-list">
-                <div class="project-card" 
+                <a href='#'
+                onclick='event.preventDefault()'
+                class="project-card" 
+                @click="$router.push('projetos/'+project.id)"
                 v-for="(project, p) in projects" 
+                @mouseenter="project.hideDetails = false"
+                @mouseleave="project.hideDetails = true"
                 :key="p">
                     <p class="name">{{project.name}}</p>
                     <p class="situation">{{project.situation}}</p>
                     <p class="descri">{{project.description}}</p>
-                    <div class="project-card-details">
+                    <div class="project-card-details" :class="{'hide':project.hideDetails}">
                         <p class="tasks-qty">
                             {{taskCount(project.tasks)}} tarefas
                         </p>
+                        <p>
+                            Iniciado em {{getDateString(project.startedAt)}}
+                        </p>
+                        <p>
+                            Termina em {{getDateString(project.edsAt)}}
+                        </p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -34,6 +45,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
+                align-items: flex-start;
                 .project-card{
                     width: 290px !important;
                     display: inline-block;
@@ -42,6 +54,12 @@
                     padding: 1em;
                     margin: 1em;
                     box-shadow: 2px 2px 4px #666;
+                    p{
+                        margin-bottom: 0.5em;
+                        &:last-child{
+                            margin-bottom: 0;
+                        }
+                    }
                     .name{
                         font-weight: bold;
                         font-size: 1.2em;
@@ -51,6 +69,11 @@
                         font-size: 0.85em;
                         margin-bottom: 1.3em;
                     }
+                    .project-card-details{
+                        &.hide{
+                            display: none;
+                        }
+                    }
                 }
             }
         }
@@ -59,7 +82,6 @@
         text-align: center;
     }
 </style>
-
 
 <script>
     import ProjectViewer from '../components/ProjectViewer.vue'
@@ -87,6 +109,14 @@
                     qty++;
             })
             return qty
+        },
+        getDateString(date){
+            if(date){
+                var day = date.getDate();
+                var month = date.getMonth()+1;
+                var year = date.getFullYear();
+                return day+'/'+month+'/'+year;
+            }
         }
     }
 
@@ -98,6 +128,8 @@
                     name: 'ERP',
                     description: 'Software de gestão empresarial',
                     situation: 'Em definição',
+                    startedAt: new Date('jul 1 2019'),
+                    endsAt: new Date('sep 30 2019'),
                     tasks: [
                         {
                             name: 'Mapeamento das regras de negócio',
@@ -111,13 +143,16 @@
                             name: 'Documentação da arquitetura do sistema',
 
                         }
-                    ]
+                    ],
+                    hideDetails: true
                 },
                 {
                     id: 3,
                     name: 'Site Petshop',
                     description: 'Site do pethsop',
                     situation: 'Em deploy/teste',
+                    startedAt: new Date('apr 1 2019'),
+                    endsAt: new Date('jul 11 2019'),
                     tasks: [
                         {
                             name: 'Construir back-end',
@@ -210,7 +245,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    hideDetails: true
                 }
             ]
         }
