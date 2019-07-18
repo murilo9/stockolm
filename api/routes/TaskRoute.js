@@ -1,14 +1,14 @@
 const express = require('express'),
     router = express.Router(),
-    Project = require('../models/ProjectModel')
+    Task = require('../models/TaskModel')
     auth = require('../middlewares/Auth')
 
-//GET for project
+//GET for task
 
-//POST for project
+//POST for task
 
-//PUT for project
+//UPDATE for task
 
-//DELETE for project
+//DELETE for task
 
 module.exports =  router
