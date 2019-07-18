@@ -1,5 +1,4 @@
-CREATE DATABASE dbStockolmo;
-USE dbStockolmo;
+/* USERS DB*/
 
 CREATE TABLE tbTarefas(
 	id INT AUTO_INCREMENT,
@@ -43,3 +42,12 @@ CREATE TABLE tbProjetoTarefas(
     FOREIGN KEY (projeto) REFERENCES tbProjetos(id)
     FOREIGN KEY (tarefaPai) REFERENCES tbProjetoTarefas(id)
 ) engine = innodb;
+
+/* SYSTEM'S DB*/
+
+CREATE TABLE tbUsuarios(
+    id INT AUTO_INCREMENT,
+    username VARCHAR(30) NOT NULL,
+    senha VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+) engine = inodb;
