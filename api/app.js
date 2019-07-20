@@ -7,10 +7,16 @@ var projectTaskRoutes = require('./routes/ProjectTaskRoute')
 
 const porta = 8888
 
+global.appSessions = []
+
 var app = express()
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json)
+
+app.route('/', (req, res) => {
+    res.render('./public/index.html')
+})
 
 app.use('/login', LoginRoutes)
 app.use('/task', taskRoutes)

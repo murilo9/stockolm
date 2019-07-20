@@ -1,11 +1,11 @@
 const DB = require('../helpers/Db')
 
-exports.getAll = (username, projectId) => {
+exports.get = (projectId, taskId, next) => {
     var script = `SELECT * FROM tbProjetoTarefas WHERE id = ${projectId}`
     DB.con(username).query(script, (err, result, fields)=>{
         //Em caso de erro:
         //TODO
         //Coleta os resultados (TODO):
-        return result
+        return next(projectTask)
     })
 }
