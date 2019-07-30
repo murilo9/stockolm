@@ -3,10 +3,14 @@ const DB = require('../helpers/Db')
 exports.get = (username, password, next) => {
     var script = `SELECT * FROM tbUsuarios WHERE username = ${username}`
     DB.con('system').query(script, (err, result, fields)=>{
-        //Em caso de erro:
-        //TODO
-        //Analisa o resultado e retorna true ou false (TODO):
-        next(true)
+        if(err){
+            console.log(err)
+            next(false)
+        }
+        if(result)
+            next(true)
+        else
+            next(false)
     })
 }
 

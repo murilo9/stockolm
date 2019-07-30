@@ -4,17 +4,63 @@ const express = require('express'),
     auth = require('../middlewares/Auth')
 
 //GET for task
-router.get('/task', () => {
-    //Coleta todas as tarefas
+router.get('/task', (req, res) => {
+    Users(req, res, () => {
+        if(user){
+            Task.read(req.username, undefined, (taskList) => {
+                res.write(taskList)
+                res.end()
+            })
+        }
+        else{
+            res.status(400)
+            res.end()
+        }
+    })
 })
 
 router.get('/task/:id', () => {
-    //Coleta uma tarefa específica
+    Users(req, res, () => {
+        if(user){
+            Task.read(req.username, req.params.id, (task) => {
+                res.write(task)
+                res.end()
+            })
+        }
+        else{
+            res.status(400)
+            res.end()
+        }
+    })
 })
 
 //POST for task
 router.post('/task', () => {
-    //Cria uma nova tarefa
+    Users(req, res, () => {
+        if(user){
+            Auth(req, res, (authenticated) => {
+                if(authenticated){
+                    Task.create(req.username, req.task, (success) => {
+                        if(success){
+                            res.end()
+                        }
+                        else{
+                            res.status(500)
+                            res.end()
+                        }
+                    })
+                }
+                else{
+                    res.status(400)
+                    res.end()
+                }
+            })
+        }
+        else{
+            res.status(400)
+            res.end()
+        }
+    })
 })
 
 //PUT for task

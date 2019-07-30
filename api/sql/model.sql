@@ -3,14 +3,13 @@
 CREATE TABLE tbTarefas(
 	id INT AUTO_INCREMENT,
     nome VARCHAR(128) NOT NULL,
+    detalhes VARCHAR (512),
     dataInicio DATETIME,
     dataFim DATETIME,
-    dataInicioString VARCHAR(64),
-    dataFimString VARCHAR(64),
-    prioridade VARCHAR(16) NOT NULL,
+    dataInicioString VARCHAR(32),
+    dataFimString VARCHAR(32),
+    prioridade INT NOT NULL,
     estado INT NOT NULL,
-    dataFinalizado DATETIME,
-    dataFinalizadoString DATETIME,
     PRIMARY KEY (id)
 ) engine = innodb;
 

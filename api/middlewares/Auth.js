@@ -28,7 +28,7 @@ const checkSession = (userSession) => {
 module.exports = (req, res, next) => {
     if(req.body.username && 
     req.body.session.hash && req.body.session.username){
-        next(checkSession(req.body.session))
+        next(checkSession(req.body.session))    //Returns boolean
     }
     else
         next(false)
