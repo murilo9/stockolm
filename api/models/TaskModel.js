@@ -121,7 +121,7 @@ exports.update = (username, newTask, taskId, next) => {
     })
 }
 
-exports.delete = (taskId, next) => {
+exports.delete = (username, taskId, next) => {
     if(taskId === undefined){   //Delete all tasks
         var script = "DELETE FROM tbTarefas"
         DB.con(username).query(script, (err, result, fields)=>{
