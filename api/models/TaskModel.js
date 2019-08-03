@@ -4,16 +4,21 @@ exports.read = (username, taskId, next) => {
     var script = "SELECT * FROM tbTarefas "
     if(taskId)
         script += `WHERE id = ${taskId}`
-    DB.con(username).query(script, (err, result, fields)=>{
+    DB.con(username).query(script, (err, results, fields)=>{
         if(err){
             console.log(err)
             next(false)
         }
         if(taskId){     //Get specific task
-            if(result){
-                var task = {}
-                for(key in result[i]){
-                    task[key] = result[i]
+            if(results){
+                var task = {
+                    id: results[0].id,
+                    title: results[0].nome,
+                    details: results[0].detalhes,
+                    startDate: results[0].dataInicio ? new Date(results[0].dataInicio) : null,
+                    endDate: results[0].dataFim ? new Date(results[0].dataFim) : null,
+                    priority: results[0].prioridade,
+                    state: results[0].status
                 }
                 next(task)
             }
@@ -22,10 +27,15 @@ exports.read = (username, taskId, next) => {
         }
         else{       //Get all tasks
             var taskList = []
-            result.forEach((val, i) => {
-                var task = {}
-                for(key in result[i]){
-                    task[key] = result[i]
+            results.forEach((result, i) => {
+                var task = {
+                    id: results[i].id,
+                    title: results[i].nome,
+                    details: results[i].detalhes,
+                    startDate: results[i].dataInicio ? new Date(results[i].dataInicio) : null,
+                    endDate: results[i].dataFim ? new Date(results[i].dataFim) : null,
+                    priority: results[i].prioridade,
+                    state: results[i].status
                 }
                 taskList.push(task)
             })
