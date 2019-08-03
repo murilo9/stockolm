@@ -118,5 +118,35 @@ exports.update = (username, newTask, taskId, next) => {
         else{
             next(true)
         }
+    })
+}
+
+exports.delete = (taskId, next) => {
+    if(taskId === undefined){   //Delete all tasks
+        var script = "DELETE FROM tbTarefas"
+        DB.con(username).query(script, (err, result, fields)=>{
+            if(err){
+                console.log(err)
+                next(false)
+            }
+            else{
+                next(true)
+            }
+        })
+    }
+    else if(isNaN(taskId)){
+        next(false)
+    }
+    else{   //Delete specific task
+        var script = `DELETE FROM tbTarefas WHERE id = ${task}`
+        DB.con(username).query(script, (err, result, fields)=>{
+            if(err){
+                console.log(err)
+                next(false)
+            }
+            else{
+                next(true)
+            }
+        })
     }
 }
