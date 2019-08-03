@@ -1,6 +1,6 @@
 const express = require('express'),
     router = express.Router(),
-    Task = require('../models/TaskModel')
+    Task = require('../models/TaskModel'),
     auth = require('../middlewares/Auth')
 
 //GET for task

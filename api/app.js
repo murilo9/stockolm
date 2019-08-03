@@ -1,26 +1,29 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-var loginRoutes = require('./routes/Login')
+var express = require('express');
+var bodyParser = require('body-parser')
+var loginRoutes = require('./routes/LoginRoute')
 var taskRoutes = require('./routes/TaskRoute')
 var projectRoutes = require('./routes/ProjectRoute')
 var projectTaskRoutes = require('./routes/ProjectTaskRoute')
-
-const porta = 8888
-
-global.appSessions = []
+var cors = require('cors')
 
 var app = express()
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json)
+global.appSessions = []
 
-app.route('/', (req, res) => {
+const porta = 8888
+
+app.use(cors())
+
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+app.get('/', (req, res) => {
     res.render('./public/index.html')
 })
 
-app.use('/login', LoginRoutes)
-app.use('/task', taskRoutes)
-app.use('/project', projectRoutes)
-app.use('projecttask', projectTaskRoutes)
+app.use('/', loginRoutes)
+app.use('/', taskRoutes)
+app.use('/', projectRoutes)
+app.use('/', projectTaskRoutes)
 
 app.listen(porta, ()=>console.log(`Aplicativo rodando na porta ${porta}`))

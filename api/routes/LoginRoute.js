@@ -6,6 +6,7 @@ const express = require('express'),
 
 //POST for login
 router.post('/login', (req, res) => {
+    console.log('POST em /login')
     Users(req, res, (user) => {
         if(user){   //Se o login foi bem-sucedido
             var expireDate = new Date()
@@ -29,6 +30,7 @@ router.post('/login', (req, res) => {
 
 //DELETE for login
 router.delete('/login', (req, res) => {
+    console.log('DELETE em /login')
     Users(req, res, (user) => {
         if(user){   //Se o usuário é válido
             Auth(req, res, (authenticated) => {
@@ -48,3 +50,5 @@ router.delete('/login', (req, res) => {
         }
     })
 })
+
+module.exports = router

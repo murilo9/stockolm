@@ -1,5 +1,7 @@
 /* USERS DB*/
 
+
+
 CREATE TABLE tbTarefas(
 	id INT AUTO_INCREMENT,
     nome VARCHAR(128) NOT NULL,
@@ -38,7 +40,7 @@ CREATE TABLE tbProjetoTarefas(
     prioridade INT NOT NULL,
     tarefaPai INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (projeto) REFERENCES tbProjetos(id)
+    FOREIGN KEY (projeto) REFERENCES tbProjetos(id),
     FOREIGN KEY (tarefaPai) REFERENCES tbProjetoTarefas(id)
 ) engine = innodb;
 
