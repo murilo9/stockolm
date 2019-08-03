@@ -5,9 +5,9 @@ const express = require('express'),
 
 //GET for task
 router.get('/task', (req, res) => {
-    Users(req, res, () => {
-        if(user){
-            Task.read(req.username, undefined, (taskList) => {
+    Auth(req, res, (authenticated) => {
+        if(authenticated){
+            Task.read(req.body.username, undefined, (taskList) => {
                 res.write(taskList)
                 res.end()
             })
@@ -20,9 +20,9 @@ router.get('/task', (req, res) => {
 })
 
 router.get('/task/:id', () => {
-    Users(req, res, () => {
-        if(user){
-            Task.read(req.username, req.params.id, (task) => {
+    Auth(req, res, (authenticated) => {
+        if(authenticated){
+            Task.read(req.body.username, req.params.id, (task) => {
                 res.write(task)
                 res.end()
             })
@@ -36,22 +36,14 @@ router.get('/task/:id', () => {
 
 //POST for task
 router.post('/task', () => {
-    Users(req, res, () => {
-        if(user){
-            Auth(req, res, (authenticated) => {
-                if(authenticated){
-                    Task.create(req.username, req.task, (success) => {
-                        if(success){
-                            res.end()
-                        }
-                        else{
-                            res.status(500)
-                            res.end()
-                        }
-                    })
+    Auth(req, res, (authenticated) => {     //If session is active
+        if(authenticated){
+            Task.create(req.body.username, req.task, (success) => {
+                if(success){
+                    res.end()
                 }
                 else{
-                    res.status(400)
+                    res.status(500)
                     res.end()
                 }
             })
