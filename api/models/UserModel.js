@@ -1,13 +1,12 @@
 const DB = require('../helpers/Db')
 
 exports.get = (username, password, next) => {
-    var script = `SELECT * FROM tbUsuarios WHERE username = ${username}`
+    var script = `SELECT * FROM tbUsuarios WHERE username = '${username}'`
     DB.con('system').query(script, (err, result, fields)=>{
         if(err){
-            console.log(err)
             next(false)
         }
-        if(result)
+        if(result[0].senha == password)
             next(true)
         else
             next(false)
@@ -25,7 +24,7 @@ exports.post = (username, password, next) => {
 }
 
 exports.update = (username, password) => {
-    var script = `UPDATE tbUsuarios SET username = ${username}, senha = ${password}`
+    var script = `UPDATE tbUsuarios SET username = '${username}', senha = '${password}'`
     DB.con('system').query(script, (err, result, fields)=>{
         if(err) next(false)
         else next(true)

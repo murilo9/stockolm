@@ -5,6 +5,7 @@ const user = require('../models/UserModel')
  */
 
 module.exports = (req, res, next) => {
+    console.log(req.body)
     if(req.body.username && req.body.password){
         let username = req.body.username
         let password = req.body.password
@@ -13,15 +14,11 @@ module.exports = (req, res, next) => {
                 next(true)
             }
             else{
-                res.status(400)
-                res.write('Usuário ou senha inváidos')
-                res.end()
+                next(false)
             }
         })
     }
     else{
-        res.status(400)
-        res.write('Usuário ou senha inváidos')
-        res.end()
+        next(false)
     }
 }

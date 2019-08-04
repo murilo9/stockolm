@@ -18,8 +18,9 @@ router.post('/login', (req, res) => {
                 username: req.body.username
             }
             global.appSessions.push(session)
-            res.write({session: session})
-            res.end()
+            res.send({session: session})
+            console.log('nova session criada')
+            console.log('global.appSessions: '+global.appSessions)
         }
         else{
             res.status(400)
@@ -29,22 +30,38 @@ router.post('/login', (req, res) => {
 })
 
 //DELETE for login
-router.delete('/login', (req, res) => {
+router.delete('/login/:user/:hash', (req, res) => {
     console.log('DELETE em /login')
-    Users(req, res, (user) => {
-        if(user){   //Se o usuário é válido
-            Auth(req, res, (authenticated) => {
-                if(authenticated){      //Logout bem-sucedido
-                    res.status(200)
-                    res.end()
+    req.body.session = {
+        username: req.params.user,
+        hash: req.params.hash
+    }
+    Auth(req, res, (authenticated) => {
+        if(authenticated){      //Realiza o logout
+            console.log('autenticado (username e hash são válidos)')
+            var i = 0
+            stop = false
+            console.log('buscando esta session pra deletar...')
+            while(!stop && i < global.appSessions.length){
+                if(global.appSessions[i].hash === req.body.session.hash 
+                && global.appSessions[i].username === req.body.session.username){
+                    global.appSessions.splice(i, 1)
+                    stop = true
                 }
-                else{       //Bad request, embora o logout pode já ter sido realizado
-                    res.status(400)
-                    res.end()
-                }
-            })
+                i++
+            }
+            if(stop){
+                res.status(200)
+                console.log('session deletada do array de sessions com sucesso')
+            }
+            else{
+                res.status(500)
+                console.log('a session não foi encontrada no array de sessions')
+            }
+            res.end()
+            console.log(global.appSessions)
         }
-        else{
+        else{       //Bad request, embora o logout pode já ter sido realizado
             res.status(400)
             res.end()
         }

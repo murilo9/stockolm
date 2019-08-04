@@ -1,13 +1,25 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <template v-if="user.logged">
-        <router-link to="/agenda#month">Agenda</router-link> |
-        <router-link to="/tarefas">Tarefas</router-link> |
-        <router-link to="/projetos">Projetos</router-link>
-      </template>
-    </div>
-    <router-view/>
+    <template v-if="user.logged">
+      <div id="nav">
+          <router-link :to="{path: '/agenda#month', params: {session: session}}">
+            Agenda
+          </router-link> |
+          <router-link :to="{path: '/tarefas', params: {session: session}}">
+            Tarefas
+          </router-link> |
+          <router-link :to="{path: '/projetos', params: {session: session}}">
+            Projetos
+          </router-link> |
+          <a href='#' onclick="event.preventDefault()" @click="logout">
+            Logout
+          </a>
+      </div>
+      <router-view/>
+    </template>
+    <template v-else>
+      <Login @login="login" />
+    </template>
   </div>
 </template>
 
@@ -35,15 +47,45 @@ body{
 </style>
 
 <script>
+import Login from './views/Login.vue'
+import axios from 'axios'
+
+var components = {
+  Login
+}
+
 var data = () => {
   return {
     user: {
       logged: false
+    },
+    session: {
+      username: '',
+      hash: ''
     }
   }
 }
 
+var methods = {
+  login(session){
+    this.$data.session = session
+    this.$data.user.logged = true
+  },
+  logout(){
+    //Request para deletar a session do servidor:
+    axios.delete(`http://localhost:8888/login/${this.$data.session.username}/${this.$data.session.hash}`, {   
+      session: this.$data.session
+    })
+    .finally(() => {    //Independentemente do resultado, desloga:
+      this.$data.user.logged = false
+      this.$data.session = {}
+    })
+  }
+}
+
 export default {
-  data: data
+  components: components,
+  data: data,
+  methods: methods
 }
 </script>
