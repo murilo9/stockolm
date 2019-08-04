@@ -2,6 +2,9 @@
   <div class="tasks">
     <h1>Tarefas</h1>
     <div class="task-list ui grid">
+      <button @click="test()">
+        login
+      </button>
       <div class="task row header">
         <div class="one wide column"></div>
         <div class="task-header ten wide column">Tarefa</div>
@@ -44,11 +47,12 @@
 
 <script>
 import Task from '../components/Task.vue';
+import axios from 'axios';
 
 var data = () => {
   return {
     tasks: [
-      {
+      /*{
         id: 0,
         title: 'Programar site do Stockolm',
         details: 'Detalhes...',
@@ -101,7 +105,7 @@ var data = () => {
         endDate: new Date('June 20, 2019'),
         priority: 2,
         status: 2
-      }
+      }*/
     ]
   }
 }
@@ -115,6 +119,19 @@ var methods = {
           task.status = 0
       }
     });
+  },
+  test(){
+    axios.get('http://localhost:8888/test', {
+      username: 'murilo9', password: 'root'
+    })
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
   }
 }
 

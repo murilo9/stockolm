@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/agenda#month">Agenda</router-link> |
-      <router-link to="/tarefas">Tarefas</router-link> |
-      <router-link to="/projetos">Projetos</router-link>
+      <template v-if="user.logged">
+        <router-link to="/agenda#month">Agenda</router-link> |
+        <router-link to="/tarefas">Tarefas</router-link> |
+        <router-link to="/projetos">Projetos</router-link>
+      </template>
     </div>
     <router-view/>
   </div>
@@ -31,3 +33,17 @@ body{
   }
 }
 </style>
+
+<script>
+var data = () => {
+  return {
+    user: {
+      logged: false
+    }
+  }
+}
+
+export default {
+  data: data
+}
+</script>

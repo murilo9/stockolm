@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Agenda from './views/Agenda.vue'
 import Tarefas from './views/Tarefas.vue'
 import Projetos from './views/Projetos.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/agenda',
+      component: Login,
     },
     {
       path: '/agenda',
