@@ -1,36 +1,21 @@
 const express = require('express'),
     router = express.Router(),
     Task = require('../models/TaskModel'),
-    auth = require('../middlewares/Auth')
+    Auth = require('../middlewares/Auth')
 
 //GET for task
-router.get('/task', (req, res) => {
-    Auth(req, res, (authenticated) => {
-        if(authenticated){
-            Task.read(req.body.username, undefined, (taskList) => {
-                res.write(taskList)
-                res.end()
-            })
-        }
-        else{
-            res.status(400)
-            res.end()
-        }
+router.get('/task/:user', (req, res) => {
+    console.log('GET em /task')
+    Task.read(req.params.user, undefined, (taskList) => {
+        res.write({taskList: taskList})
+        res.end()
     })
 })
 
-router.get('/task/:id', () => {
-    Auth(req, res, (authenticated) => {
-        if(authenticated){
-            Task.read(req.body.username, req.params.id, (task) => {
-                res.write(task)
-                res.end()
-            })
-        }
-        else{
-            res.status(400)
-            res.end()
-        }
+router.get('/task/:user/:id', () => {
+    Task.read(req.params.user, req.params.id, (task) => {
+        res.write(task)
+        res.end()
     })
 })
 
