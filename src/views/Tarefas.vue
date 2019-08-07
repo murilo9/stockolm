@@ -2,9 +2,6 @@
   <div class="tasks">
     <h1>Tarefas</h1>
     <div class="task-list ui grid">
-      <button @click="test()">
-        login
-      </button>
       <div class="task row header">
         <div class="one wide column"></div>
         <div class="task-header ten wide column">Tarefa</div>
@@ -51,62 +48,7 @@ import axios from 'axios';
 
 var data = () => {
   return {
-    tasks: [
-      /*{
-        id: 0,
-        title: 'Programar site do Stockolm',
-        details: 'Detalhes...',
-        startDate: new Date('July 01, 2019'),
-        endDate: undefined,
-        priority: 1,
-        status: 0
-      },
-      {
-        id: 1,
-        title: 'Programar o sistema do Stockolm',
-        details: 'Detalhes...',
-        startDate: undefined,
-        endDate: undefined,
-        priority: 1,
-        status: 1
-      },
-      {
-        id: 2,
-        title: 'Fazer coisa que começa e termina no mesmo dia',
-        details: 'Detalhes...',
-        startDate: new Date('June 22, 2019'),
-        endDate: new Date('June 22, 2019'),
-        priority: 1,
-        status: 1
-      },
-      {
-        id: 3,
-        title: 'Fazer fucking tarefa de libras',
-        details: 'Detalhes...',
-        startDate: new Date('June 28, 2019'),
-        endDate: new Date('June 28, 2019'),
-        priority: 3,
-        status: 0
-      },
-      {
-        id: 4,
-        title: 'Estudar libras',
-        details: 'Detalhes...',
-        startDate: undefined,
-        endDate: new Date('June 28, 2019'),
-        priority: 2,
-        status: 0
-      },
-      {
-        id: 5,
-        title: 'Coisa ja feita',
-        details: 'Detalhes...',
-        startDate: undefined,
-        endDate: new Date('June 20, 2019'),
-        priority: 2,
-        status: 2
-      }*/
-    ]
+      
   }
 }
 
@@ -119,29 +61,23 @@ var methods = {
           task.status = 0
       }
     });
-  },
-  test(){
-    axios.get('http://localhost:8888/test', {
-      username: 'murilo9', password: 'root'
-    })
-    .then(function (response) {
-      // handle success
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
   }
+}
+
+var props = {
+  session: Object,
+  tasks: Array
 }
 
 var components = {
   Task
 }
 
+
 export default {
   data: data,
   methods: methods,
-  components: components
+  components: components,
+  props: props
 }
 </script>

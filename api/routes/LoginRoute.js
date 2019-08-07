@@ -23,8 +23,7 @@ router.post('/login', (req, res) => {
             console.log('global.appSessions: '+global.appSessions)
         }
         else{
-            res.status(400)
-            res.end()
+            res.status(400).send()
         }
     })
 })
@@ -62,8 +61,7 @@ router.delete('/login/:user/:hash', (req, res) => {
             console.log(global.appSessions)
         }
         else{       //Bad request, embora o logout pode já ter sido realizado
-            res.status(400)
-            res.end()
+            res.status(400).send()
         }
     })
 })

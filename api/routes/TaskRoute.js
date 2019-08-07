@@ -7,15 +7,13 @@ const express = require('express'),
 router.get('/task/:user', (req, res) => {
     console.log('GET em /task')
     Task.read(req.params.user, undefined, (taskList) => {
-        res.write({taskList: taskList})
-        res.end()
+        res.send({taskList: taskList})
     })
 })
 
 router.get('/task/:user/:id', () => {
     Task.read(req.params.user, req.params.id, (task) => {
-        res.write(task)
-        res.end()
+        res.send(task)
     })
 })
 
@@ -28,14 +26,12 @@ router.post('/task', () => {
                     res.end()
                 }
                 else{
-                    res.status(500)
-                    res.end()
+                    res.status(500).send()
                 }
             })
         }
         else{
-            res.status(400)
-            res.end()
+            res.status(400).send()
         }
     })
 })
@@ -45,9 +41,7 @@ router.put('/task/:id', () => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
             if(isNaN(req.params.id)){
-                res.write({msg: 'invalid_id'})
-                res.status(400)
-                res.end()
+                res.status(400).send('invalid_id')
             }
             else{
                 Task.update(req.body.username, req.body.task, req.params.id, (updated) =>{
@@ -55,16 +49,13 @@ router.put('/task/:id', () => {
                         res.end()
                     }
                     else{
-                        res.status(500)
-                        res.end()
+                        res.status(500).send()
                     }
                 })
             }
         }
         else{
-            res.write({msg: 'bad_session'})
-            res.status(400)
-            res.end()
+            res.status(400).send('bad_session')
         }
     })
 })
@@ -74,9 +65,7 @@ router.delete('/task/:id', () => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
             if(isNaN(req.params.id)){
-                res.write({msg: 'invalid_id'})
-                res.status(400)
-                res.end()
+                res.status(400).send('invalid_id')
             }
             else{
                 Task.delete(req.body.username, req.params.id, (deleted) =>{
@@ -84,16 +73,13 @@ router.delete('/task/:id', () => {
                         res.end()
                     }
                     else{
-                        res.status(500)
-                        res.end()
+                        res.status(500).send()
                     }
                 })
             }
         }
         else{
-            res.write({msg: 'bad_session'})
-            res.status(400)
-            res.end()
+            res.status(400).send('bad_session')
         }
     })
 })

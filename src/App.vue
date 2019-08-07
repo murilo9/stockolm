@@ -15,10 +15,10 @@
             Logout
           </a>
       </div>
-      <router-view/>
+      <router-view :tasks="tasks"/>
     </template>
     <template v-else>
-      <Login @login="login" />
+      <Login @login="login"/>
     </template>
   </div>
 </template>
@@ -62,7 +62,8 @@ var data = () => {
     session: {
       username: '',
       hash: ''
-    }
+    },
+    tasks: []
   }
 }
 
@@ -70,9 +71,9 @@ var methods = {
   login(session){
     this.$data.session = session
     this.$data.user.logged = true
+    this.loadTasks()
   },
-  logout(){
-    //Request para deletar a session do servidor:
+  logout(){   //Request para deletar a session do servidor:
     axios.delete(`http://localhost:8888/login/${this.$data.session.username}/${this.$data.session.hash}`, {   
       session: this.$data.session
     })
@@ -80,12 +81,34 @@ var methods = {
       this.$data.user.logged = false
       this.$data.session = {}
     })
+  },
+  loadTasks(){    //Carrega todas as tarefas do servidor:
+    axios.get(`http://localhost:8888/task/${this.$data.session.username}`)
+    .then((response) => {
+      var resData = response.data;
+      if(resData.taskList){
+        //Inicializa os objetos Date:
+        resData.taskList.forEach((task, i) => {
+          task.startDate = task.startDate ? new Date(task.startDate) : null
+          task.endDate = task.endDate ? new Date(task.endDate) : null
+        })
+        this.$data.tasks = resData.taskList
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 }
 
 export default {
   components: components,
   data: data,
-  methods: methods
+  methods: methods,
+  watch: {
+    $route (to, from) {
+      this.loadTasks()
+    }
+  }
 }
 </script>

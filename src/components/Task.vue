@@ -44,11 +44,13 @@ var computed = {
         var m = this.getMonthLabel('start');
         var d = this.task.startDate.getDate();
         return d+' '+m;
+        return 'startDate'
     },
     getEndDate: function(){
         var m = this.getMonthLabel('end');
         var d = this.task.endDate.getDate();
         return m+'/'+d;
+        return 'endDate'
     }
 }
 
@@ -74,10 +76,10 @@ var methods = {
             case 12: m = "dez"; break;
         }
         return m;
+        return 'month'
     },
     changeStatus: function(){
         this.$emit('change-status', this.task.id);
-        console.log(this.task)
     }
 }
 
