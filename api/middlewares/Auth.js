@@ -27,7 +27,8 @@ const checkSession = (userSession) => {
  */
 module.exports = (req, res, next) => {
     console.log('middelware Auth')
-    console.log('req.body: '+req.body.session)
+    console.log('req.body: ')
+    console.log(req.body.session)
     if(req.body.session.hash && req.body.session.username){
         next(checkSession(req.body.session))    //Returns boolean
     }

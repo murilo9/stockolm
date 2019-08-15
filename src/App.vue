@@ -2,13 +2,13 @@
   <div id="app">
     <template v-if="user.logged">
       <div id="nav">
-          <router-link :to="{path: '/agenda#month', params: {session: session}}">
+          <router-link :to="{path: '/agenda#month', params: {session: session ? session : ''}}">
             Agenda
           </router-link> |
-          <router-link :to="{path: '/tarefas', params: {session: session}}">
+          <router-link :to="{path: '/tarefas', params: {session: session ? session : ''}}">
             Tarefas
           </router-link> |
-          <router-link :to="{path: '/projetos', params: {session: session}}">
+          <router-link :to="{path: '/projetos', params: {session: session ? session : ''}}">
             Projetos
           </router-link> |
           <a href='#' onclick="event.preventDefault()" @click="logout">
@@ -92,7 +92,7 @@ var methods = {
       return {
         hash: Cookies.get('sessionHash'),
         username: Cookies.get('sessionUsername'),
-        expire: Cookies.get('sessionExpire')
+        expire: new Date(Cookies.get('sessionExpire'))
       }
     else
       return false
@@ -115,11 +115,21 @@ var methods = {
     })
   },
   changeTaskState(taskId){
-    this.tasks.forEach(function(task, t){
+    this.tasks.forEach((task, t) => {
       if(task.id == taskId){
         task.state++;
         if(task.state >= 3)
           task.state = 0
+        axios.put(`http://localhost:8888/task/${this.session.username}/${taskId}`, {
+          session: this.session,
+          task: {
+            state: task.state
+          }
+        }).then((response) => {
+          //Do nothing
+        }).catch((error) => {
+          alert('Houve um erro ao tentar atualizar a tarefa.')
+        })
       }
     })
   }
@@ -137,9 +147,12 @@ export default {
   mounted: function(){
     var session = this.buildSession()
     if(session){
-      this.session = session
-      this.user.logged = true
-      this.loadTasks()
+      var now = new Date()
+      if(now.getTime() < session.expire.getTime()){
+        this.session = session
+        this.user.logged = true
+        this.loadTasks()
+      }
     }
   }
 }

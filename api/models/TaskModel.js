@@ -97,18 +97,19 @@ exports.update = (username, newTask, taskId, next) => {
         ${newTask.endDate.getMonth()+1}-${newTask.endDate.getDate()} 
         ${newTask.endDate.getHours()}-${newTask.endDate.getMinutes()}-
         ${newTask.endDate.getSeconds()}` : null
-    var priority = newTask.priority
-    var status = newTask.status
+    var priority = newTask.priority !== undefined ? newTask.priority : NaN
+    var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
-    var script = "UPDATE tbTarefas SET "
-    if(name) script += `nome = '${name}'`
-    if(details) script = `, detalhes = '${details}'`
+    var script = "UPDATE tbTarefas SET"
+    if(name) script += ` nome = '${name}',`
+    if(details) script = ` detalhes = '${details}',`
     if(startDate) 
-        script += `, dataInicio = '${startDate}', dataInicioString = '${startDateString}'`
+        script += ` dataInicio = '${startDate}', dataInicioString = '${startDateString}',`
     if(endDate)
-        script += `, dataFim = '${endDate}', dataFimString = '${endDateString}'`
-    if(priority) script += `, prioridade = ${priority}`
-    if(status) script += `, status = ${status}`
+        script += ` dataFim = '${endDate}', dataFimString = '${endDateString}',`
+    if(!isNaN(priority)) script += ` prioridade = ${priority},`
+    if(!isNaN(state)) script += ` estado = ${state},`
+    script = script.slice(0, -1)   //Removes last comma (it's 'sLice', not 'sPLice')
     script += ` WHERE id = ${taskId}`
     DB.con(username).query(script, (err, result, fields)=>{
         if(err){

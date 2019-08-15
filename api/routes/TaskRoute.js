@@ -18,10 +18,10 @@ router.get('/task/:user/:id', () => {
 })
 
 //POST for task
-router.post('/task', () => {
+router.post('/task/:user', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
-            Task.create(req.body.username, req.task, (success) => {
+            Task.create(req.params.user, req.task, (success) => {
                 if(success){
                     res.end()
                 }
@@ -37,14 +37,14 @@ router.post('/task', () => {
 })
 
 //PUT for task
-router.put('/task/:id', () => {
+router.put('/task/:user/:id', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
             if(isNaN(req.params.id)){
                 res.status(400).send('invalid_id')
             }
             else{
-                Task.update(req.body.username, req.body.task, req.params.id, (updated) =>{
+                Task.update(req.params.user, req.body.task, req.params.id, (updated) =>{
                     if(updated){
                         res.end()
                     }
@@ -61,7 +61,7 @@ router.put('/task/:id', () => {
 })
 
 //DELETE for task
-router.delete('/task/:id', () => {
+router.delete('/task/:id', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
             if(isNaN(req.params.id)){
