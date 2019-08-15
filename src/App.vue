@@ -18,7 +18,7 @@
       <router-view :tasks="tasks" @change-task-state="changeTaskState"/>
     </template>
     <template v-else>
-      <Login @login="login"/>
+      <LoginScreen @login="login"/>
     </template>
   </div>
 </template>
@@ -47,11 +47,12 @@ body{
 </style>
 
 <script>
-import Login from './views/Login.vue'
+import LoginScreen from './views/LoginScreen.vue'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 var components = {
-  Login
+  LoginScreen
 }
 
 var data = () => {
@@ -59,41 +60,54 @@ var data = () => {
     user: {
       logged: false
     },
-    session: {
-      username: '',
-      hash: ''
-    },
     tasks: []
   }
 }
 
 var methods = {
   login(session){
-    this.$data.session = session
-    this.$data.user.logged = true
+    Cookies.set('sessionHash', session.hash)
+    Cookies.set('sessionUsername', session.username)
+    Cookies.set('sessionExpire', session.expire)
+    this.session = session
+    this.user.logged = true
     this.loadTasks()
   },
   logout(){   //Request para deletar a session do servidor:
-    axios.delete(`http://localhost:8888/login/${this.$data.session.username}/${this.$data.session.hash}`, {   
-      session: this.$data.session
+    axios.delete(`http://localhost:8888/login/${this.session.username}/${this.session.hash}`, {   
+      session: this.session
     })
     .finally(() => {    //Independentemente do resultado, desloga:
-      this.$data.user.logged = false
-      this.$data.session = {}
+      this.user.logged = false
+      this.session = {}
+      Cookies.remove('sessionHash')
+      Cookies.remove('sessionUsername')
+      Cookies.remove('sessionExpire')
     })
   },
+  buildSession(){
+    if(Cookies.get('sessionHash') && 
+    Cookies.get('sessionUsername') && 
+    Cookies.get('sessionExpire'))
+      return {
+        hash: Cookies.get('sessionHash'),
+        username: Cookies.get('sessionUsername'),
+        expire: Cookies.get('sessionExpire')
+      }
+    else
+      return false
+  },
   loadTasks(){    //Carrega todas as tarefas do servidor:
-    axios.get(`http://localhost:8888/task/${this.$data.session.username}`)
+    axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
       var resData = response.data;
-      console.log(resData.taskList)
       if(resData.taskList){
         //Inicializa os objetos Date:
         resData.taskList.forEach((task, i) => {
           task.startDate = task.startDate ? new Date(task.startDate) : null
           task.endDate = task.endDate ? new Date(task.endDate) : null
         })
-        this.$data.tasks = resData.taskList
+        this.tasks = resData.taskList
       }
     })
     .catch((error) => {
@@ -117,6 +131,14 @@ export default {
   methods: methods,
   watch: {
     $route (to, from) {
+      this.loadTasks()
+    }
+  },
+  mounted: function(){
+    var session = this.buildSession()
+    if(session){
+      this.session = session
+      this.user.logged = true
       this.loadTasks()
     }
   }
