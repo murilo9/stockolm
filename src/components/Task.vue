@@ -1,15 +1,15 @@
 <template>
     <div class="task row">
         <a href='' onclick="event.preventDefault()"
-        @click="changeStatus"
-        class="status one wide column">
-            <template v-if="task.status == 2">
+        @click="changeState"
+        class="state one wide column">
+            <template v-if="task.state == 0">
                 <i class="circle outline icon"></i>
             </template>
-            <template v-else-if="task.status == 1">
+            <template v-else-if="task.state == 2">
                 <i class="check icon"></i>
             </template>
-            <template v-else>
+            <template v-else-if="task.state == 1">
                 <i class="ellipsis horizontal icon"></i>
             </template>
         </a>
@@ -76,10 +76,9 @@ var methods = {
             case 12: m = "dez"; break;
         }
         return m;
-        return 'month'
     },
-    changeStatus: function(){
-        this.$emit('change-status', this.task.id);
+    changeState: function(){
+        this.$emit('change-state', this.task.id);
     }
 }
 
@@ -109,7 +108,7 @@ export default {
             display: flex !important;
             align-items: center;
         }
-        .status{
+        .state{
             text-align: center;
             font-size: 1.3em;
         }

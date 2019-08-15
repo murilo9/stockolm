@@ -15,7 +15,7 @@
             Logout
           </a>
       </div>
-      <router-view :tasks="tasks"/>
+      <router-view :tasks="tasks" @change-task-state="changeTaskState"/>
     </template>
     <template v-else>
       <Login @login="login"/>
@@ -86,6 +86,7 @@ var methods = {
     axios.get(`http://localhost:8888/task/${this.$data.session.username}`)
     .then((response) => {
       var resData = response.data;
+      console.log(resData.taskList)
       if(resData.taskList){
         //Inicializa os objetos Date:
         resData.taskList.forEach((task, i) => {
@@ -97,6 +98,15 @@ var methods = {
     })
     .catch((error) => {
       console.log(error);
+    })
+  },
+  changeTaskState(taskId){
+    this.tasks.forEach(function(task, t){
+      if(task.id == taskId){
+        task.state++;
+        if(task.state >= 3)
+          task.state = 0
+      }
     })
   }
 }

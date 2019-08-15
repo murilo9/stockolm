@@ -18,7 +18,7 @@ exports.read = (username, taskId, next) => {
                     startDate: results[0].dataInicio ? new Date(results[0].dataInicio) : null,
                     endDate: results[0].dataFim ? new Date(results[0].dataFim) : null,
                     priority: results[0].prioridade,
-                    state: results[0].status
+                    state: results[0].estado
                 }
                 next(task)
             }
@@ -35,7 +35,7 @@ exports.read = (username, taskId, next) => {
                     startDate: results[i].dataInicio ? new Date(results[i].dataInicio) : null,
                     endDate: results[i].dataFim ? new Date(results[i].dataFim) : null,
                     priority: results[i].prioridade,
-                    state: results[i].status
+                    state: results[i].estado
                 }
                 taskList.push(task)
             })

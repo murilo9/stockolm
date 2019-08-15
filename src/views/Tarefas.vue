@@ -12,7 +12,7 @@
       <Task v-for="(task, t) in tasks" 
       :key="t" 
       :task="task" 
-      @change-status="changeStatus"/>
+      @change-state="changeState"/>
     </div>
   </div>
 </template>
@@ -53,14 +53,8 @@ var data = () => {
 }
 
 var methods = {
-  changeStatus (taskId){
-    this.$data.tasks.forEach(function(task, t){
-      if(task.id == taskId){
-        task.status++;
-        if(task.status == 3)
-          task.status = 0
-      }
-    });
+  changeState (taskId){
+    this.$emit('change-task-state', taskId)
   }
 }
 
