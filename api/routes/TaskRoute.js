@@ -61,14 +61,18 @@ router.put('/task/:user/:id', (req, res) => {
 })
 
 //DELETE for task
-router.delete('/task/:id', (req, res) => {
+router.delete('/task/:user/:hash/:id', (req, res) => {
+    req.body.session = {
+        username: req.params.user,
+        hash: req.params.hash
+    }
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
             if(isNaN(req.params.id)){
                 res.status(400).send('invalid_id')
             }
             else{
-                Task.delete(req.body.username, req.params.id, (deleted) =>{
+                Task.delete(req.params.user, req.params.id, (deleted) =>{
                     if(deleted){
                         res.end()
                     }

@@ -15,7 +15,9 @@
             Logout
           </a>
       </div>
-      <router-view :tasks="tasks" @change-task-state="changeTaskState"/>
+      <router-view :tasks="tasks" :session="session ? session : null"
+      @change-task-state="changeTaskState" 
+      @reload-tasks="loadTasks"/>
     </template>
     <template v-else>
       <LoginScreen @login="login"/>
@@ -98,6 +100,7 @@ var methods = {
       return false
   },
   loadTasks(){    //Carrega todas as tarefas do servidor:
+    console.log('loadTasks')
     axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
       var resData = response.data;

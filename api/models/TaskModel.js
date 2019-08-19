@@ -139,7 +139,7 @@ exports.delete = (username, taskId, next) => {
         next(false)
     }
     else{   //Delete specific task
-        var script = `DELETE FROM tbTarefas WHERE id = ${task}`
+        var script = `DELETE FROM tbTarefas WHERE id = ${taskId}`
         DB.con(username).query(script, (err, result, fields)=>{
             if(err){
                 console.log(err)

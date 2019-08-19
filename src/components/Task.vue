@@ -14,7 +14,7 @@
             </template>
         </a>
         <a href='' onclick="event.preventDefault()"
-        class="title ten wide column">
+        class="title nine wide column">
             {{task.title}}
         </a>
         <a href='' onclick="event.preventDefault()"
@@ -26,8 +26,13 @@
             {{task.startDate ? getStartDate : '-'}}
         </a>
         <a href='' onclick="event.preventDefault()"
-            class="date end-date two wide column">
+        class="date end-date two wide column">
             {{task.endDate ? getEndDate : '-'}}
+        </a>
+        <a href='' onclick="event.preventDefault()"
+        class="delete end-date one wide column"
+        @click="deleteTask">
+            <i class="x icon"></i>
         </a>
     </div>
 </template>
@@ -79,6 +84,9 @@ var methods = {
     },
     changeState: function(){
         this.$emit('change-state', this.task.id);
+    },
+    deleteTask: function(){
+        this.$emit('delete-task', this.task.id);
     }
 }
 
@@ -115,18 +123,21 @@ export default {
         .priority{
             text-align: center;
             font-size: 1.3em;
-            ._1{
+            ._0{
                 color: hsl(140, 60%, 50%);
             }
-            ._2{
+            ._1{
                 color: hsl(50, 90%, 50%);
             }
-            ._3{
+            ._2{
                 color: hsl(0, 80%, 50%);
             }
         }
         .date{
             text-align: center;
+        }
+        .delete{
+            color: crimson;
         }
     }
 </style>

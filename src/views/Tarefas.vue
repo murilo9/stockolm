@@ -12,7 +12,8 @@
       <Task v-for="(task, t) in tasks" 
       :key="t" 
       :task="task" 
-      @change-state="changeState"/>
+      @change-state="changeState"
+      @delete-task="deleteTask"/>
     </div>
   </div>
 </template>
@@ -55,12 +56,21 @@ var data = () => {
 var methods = {
   changeState (taskId){
     this.$emit('change-task-state', taskId)
+  },
+  deleteTask(taskId){
+    axios.delete(`http://localhost:8888/task/${this.session.username}/${this.session.hash}/${taskId}`)
+    .then((response) => {
+      this.$emit('reload-tasks')
+    })
+    .catch((error) => {
+      alert(error)
+    })
   }
 }
 
 var props = {
   session: Object,
-  tasks: Array
+  tasks: Array,
 }
 
 var components = {
