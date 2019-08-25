@@ -129,7 +129,8 @@ var data = () => {
                 day: 15,
                 month: 0,
                 year: 2019,
-                timeString: ''
+                timeString: '',
+                hasTime: false
             },
             endDate: {
                 enabled: false,
@@ -138,7 +139,8 @@ var data = () => {
                 month: 0,
                 year: 2019,
                 hour: 12,
-                timeString: ''
+                timeString: '',
+                hasTime: false
             },
             priority: 0
         }
@@ -153,13 +155,16 @@ var methods = {
             this.taskForm.startDate.date.setDate(this.taskForm.startDate.day)
             this.taskForm.startDate.date.setMonth(this.taskForm.startDate.month)
             this.taskForm.startDate.date.setYear(this.taskForm.startDate.year)
-            let time = this.taskForm.startDate.timeString
-            this.taskForm.startDate.date.setHours(
-                time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2)
-            )
-            this.taskForm.startDate.date.setMinutes(
-                time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5)
-            )
+            var time = this.taskForm.startDate.timeString
+            if(time){
+                this.taskForm.startDate.date.setHours(
+                    time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2)
+                )
+                this.taskForm.startDate.date.setMinutes(
+                    time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5)
+                )
+                this.taskForm.startDate.hasTime = true
+            }
             this.taskForm.startDate.date = this.taskForm.startDate.date.getTime()
         }
         if(this.taskForm.endDate.enabled){      //Build end date
@@ -167,13 +172,16 @@ var methods = {
             this.taskForm.endDate.date.setDate(this.taskForm.endDate.day)
             this.taskForm.endDate.date.setMonth(this.taskForm.endDate.month)
             this.taskForm.endDate.date.setYear(this.taskForm.endDate.year)
-            let time = this.taskForm.endDate.timeString
-            this.taskForm.endDate.date.setHours(
-                time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2)
-            )
-            this.taskForm.endDate.date.setMinutes(
-                time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5)
-            )
+            var time = this.taskForm.endDate.timeString
+            if(time){
+                this.taskForm.endDate.date.setHours(
+                    time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2)
+                )
+                this.taskForm.endDate.date.setMinutes(
+                    time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5)
+                )
+                this.taskForm.endDate.hasTime = true
+            }
             this.taskForm.endDate.date = this.taskForm.endDate.date.getTime()
         }
         //Make post request to server:

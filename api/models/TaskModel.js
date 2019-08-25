@@ -17,6 +17,8 @@ exports.read = (username, taskId, next) => {
                     description: results[0].detalhes,
                     startDate: results[0].dataInicio ? new Date(results[0].dataInicio) : null,
                     endDate: results[0].dataFim ? new Date(results[0].dataFim) : null,
+                    hasStartTime: results[0].possuiHoraInicio,
+                    hasEndTime: results[0].possuiHoraFim,
                     priority: results[0].prioridade,
                     state: results[0].estado
                 }
@@ -34,6 +36,8 @@ exports.read = (username, taskId, next) => {
                     description: results[i].detalhes,
                     startDate: results[i].dataInicio ? new Date(results[i].dataInicio) : null,
                     endDate: results[i].dataFim ? new Date(results[i].dataFim) : null,
+                    hasStartTime: results[i].possuiHoraInicio,
+                    hasEndTime: results[i].possuiHoraFim,
                     priority: results[i].prioridade,
                     state: results[i].estado
                 }
@@ -67,12 +71,14 @@ exports.create = (username, task, next) => {
             `${endDate.getHours()}-${endDate.getMinutes()}-`+
             `${endDate.getSeconds()}"` : null
             var priority = task.priority
+        var hasStartTime = task.startDate.hasTime
+        var hasEndTime = task.endDate.hasTime
         var status = 0
         //Insert into DB:
-        var script = `INSERT INTO tbTarefas(nome, detalhes, dataInicio, `+
-            `dataFim, dataInicioString, dataFimString, prioridade, estado) `+
-        `VALUES ("${name}", "${description}", ${startDateSQL}, ${endDateSQL}, `+
-        `"${startDateString}", "${endDateString}", ${priority}, ${status})`
+        var script = `INSERT INTO tbTarefas(nome, detalhes, dataInicio, dataFim, `+
+            `dataInicioString, dataFimString, possuiHoraInicio, possuiHoraFim, prioridade, estado) `+
+        `VALUES ("${name}", "${description}", ${startDateSQL}, ${endDateSQL}, "${startDateString}", `+
+        `"${endDateString}", ${hasStartTime}, ${hasEndTime}, ${priority}, ${status})`
         DB.con(username).query(script, (err, result, fields)=>{
             if(err){
                 console.log(err)
@@ -102,6 +108,8 @@ exports.update = (username, newTask, taskId, next) => {
         ${endDate.getMonth()+1}-${endDate.getDate()} 
         ${endDate.getHours()}-${endDate.getMinutes()}-
         ${endDate.getSeconds()}"` : null
+    var hasStartTime = newTask.startDate.hasTime !== undefined ? newTask.startDate.hasTime : null
+    var hasEndTime = newTask.endDate.hasTime !== undefined ? newTask.endDate.hasTime : null
     var priority = newTask.priority !== undefined ? newTask.priority : NaN
     var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
@@ -112,6 +120,10 @@ exports.update = (username, newTask, taskId, next) => {
         script += ` dataInicio = ${startDate}, dataInicioString = "${startDateString}",`
     if(endDate)
         script += ` dataFim = ${endDate}, dataFimString = "${endDateString}",`
+    if(hasStartTime !== null)
+        script += ` possuiHoraInicio = ${hasStartTime},`
+    if(hasEndTime !== null)
+        script += ` possuiHoraFim = ${hasEndTime},`
     if(!isNaN(priority)) script += ` prioridade = ${priority},`
     if(!isNaN(state)) script += ` estado = ${state},`
     script = script.slice(0, -1)   //Removes last comma (it's 'sLice', not 'sPLice')

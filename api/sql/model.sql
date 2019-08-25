@@ -1,7 +1,5 @@
 /* USERS DB*/
 
-
-
 CREATE TABLE tbTarefas(
 	id INT AUTO_INCREMENT,
     nome VARCHAR(128) NOT NULL,
@@ -10,6 +8,8 @@ CREATE TABLE tbTarefas(
     dataFim DATETIME,
     dataInicioString VARCHAR(32),
     dataFimString VARCHAR(32),
+    possuiHoraInicio BOOL DEFAULT false,
+    possuiHoraFim BOOL DEFAULT false,
     prioridade INT NOT NULL,
     estado INT NOT NULL,
     PRIMARY KEY (id)

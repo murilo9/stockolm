@@ -23,11 +23,17 @@
         </a>
         <a href='' onclick="event.preventDefault()"
         class="date start-date two wide column">
-            <span>{{task.startDate ? getStartDate : '-'}}</span>
+            <span>
+                {{task.startDate ? getStartDate : '-'}}
+                {{task.hasStartTime ? getStartHour : ''}}
+            </span>
         </a>
         <a href='' onclick="event.preventDefault()"
         class="date end-date two wide column">
-            <span>{{task.endDate ? getEndDate : '-'}}</span>
+            <span>
+                {{task.endDate ? getEndDate : '-'}}
+                {{task.hasEndTime ? getEndHour : ''}}
+            </span>
         </a>
         <a href='' onclick="event.preventDefault()"
         class="delete end-date one wide column"
@@ -45,17 +51,25 @@ var data = function(){
 }
 
 var computed = {
-    getStartDate: function(){
+    getStartDate(){
         var m = this.getMonthLabel('start');
         var d = this.task.startDate.getDate();
         return d+' '+m;
-        return 'startDate'
     },
-    getEndDate: function(){
+    getEndDate(){
         var m = this.getMonthLabel('end');
         var d = this.task.endDate.getDate();
-        return m+'/'+d;
-        return 'endDate'
+        return d+' '+m;
+    },
+    getStartHour(){
+        var h = this.task.startDate.getHours()
+        var m = this.task.startDate.getMinutes()
+        return h+':'+m
+    },
+    getEndHour(){
+        var h = this.task.endDate.getHours()
+        var m = this.task.endDate.getMinutes()
+        return h+':'+m
     }
 }
 
@@ -106,7 +120,6 @@ export default {
         background: white;
         margin-bottom: 0.5em;
         padding: 0 !important;
-        border-radius: 5px;
         display: flex;
         justify-content: center;
         a{
@@ -118,6 +131,10 @@ export default {
             &.title{
                 justify-content: end;
                 padding-left: 0 !important;
+            }
+            &.date{
+                padding-left: 0 !important;
+                padding-right: 0 !important;
             }
         }
         .state{
