@@ -14,6 +14,7 @@
       :key="t" 
       :task="task" 
       @change-state="changeState"
+      @change-priority="changePriority"
       @delete-task="deleteTask"/>
     </div>
     <div class="tasks-list-empty" v-else>
@@ -90,6 +91,9 @@ var data = () => {
 var methods = {
   changeState (taskId){
     this.$emit('change-task-state', taskId)
+  },
+  changePriority(taskId){
+    this.$emit('change-task-priority', taskId)
   },
   deleteTask(taskId){
     axios.delete(`http://localhost:8888/task/${this.session.username}/${this.session.hash}/${taskId}`)

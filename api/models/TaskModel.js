@@ -108,8 +108,12 @@ exports.update = (username, newTask, taskId, next) => {
         ${endDate.getMonth()+1}-${endDate.getDate()} 
         ${endDate.getHours()}-${endDate.getMinutes()}-
         ${endDate.getSeconds()}"` : null
-    var hasStartTime = newTask.startDate.hasTime !== undefined ? newTask.startDate.hasTime : null
-    var hasEndTime = newTask.endDate.hasTime !== undefined ? newTask.endDate.hasTime : null
+    if(newTask.startDate !== undefined)
+        var hasStartTime = newTask.startDate.hasStartTime !== undefined ? 
+        newTask.startDate.hasStartTime : null
+    if(newTask.endDate !== undefined)
+        var hasEndTime = newTask.endDate.hasEndTime !== undefined ? 
+        newTask.endDate.hasEndTime : null
     var priority = newTask.priority !== undefined ? newTask.priority : NaN
     var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
@@ -120,9 +124,9 @@ exports.update = (username, newTask, taskId, next) => {
         script += ` dataInicio = ${startDate}, dataInicioString = "${startDateString}",`
     if(endDate)
         script += ` dataFim = ${endDate}, dataFimString = "${endDateString}",`
-    if(hasStartTime !== null)
+    if(hasStartTime !== undefined)
         script += ` possuiHoraInicio = ${hasStartTime},`
-    if(hasEndTime !== null)
+    if(hasEndTime !== undefined)
         script += ` possuiHoraFim = ${hasEndTime},`
     if(!isNaN(priority)) script += ` prioridade = ${priority},`
     if(!isNaN(state)) script += ` estado = ${state},`

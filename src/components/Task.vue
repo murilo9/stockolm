@@ -18,6 +18,7 @@
             <span>{{task.name}}</span>
         </a>
         <a href='' onclick="event.preventDefault()"
+        @click="changePriority"
         class="priority one wide column">
             <i class="circle icon" :class="'_'+task.priority"></i>
         </a>
@@ -76,9 +77,9 @@ var computed = {
 var methods = {
     getMonthLabel: function(what){
         if(what == 'start')
-            var base = this.task.startDate.getMonth()+1;
+            var base = this.task.startDate.getMonth()+1
         else if (what == 'end')
-            var base = this.task.endDate.getMonth()+1;
+            var base = this.task.endDate.getMonth()+1
         var m = '';
         switch(base){
             case 1: m = "jan"; break;
@@ -96,11 +97,14 @@ var methods = {
         }
         return m;
     },
+    changePriority(){
+        this.$emit('change-priority', this.task.id)
+    },
     changeState: function(){
-        this.$emit('change-state', this.task.id);
+        this.$emit('change-state', this.task.id)
     },
     deleteTask: function(){
-        this.$emit('delete-task', this.task.id);
+        this.$emit('delete-task', this.task.id)
     }
 }
 

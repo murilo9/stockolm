@@ -17,6 +17,7 @@
       </div>
       <router-view :tasks="tasks" :session="session ? session : null"
       @change-task-state="changeTaskState" 
+      @change-task-priority="changeTaskPriority"
       @reload-tasks="loadTasks"/>
     </template>
     <template v-else>
@@ -104,7 +105,6 @@ var methods = {
       return false
   },
   loadTasks(){    //Carrega todas as tarefas do servidor:
-    console.log('loadTasks')
     axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
       var resData = response.data;
@@ -122,10 +122,29 @@ var methods = {
       console.log(error);
     })
   },
+  changeTaskPriority(taskId){
+    this.tasks.forEach((task, t) => {
+      if(task.id == taskId){
+        task.priority++
+        if(task.priority >= 3)
+          task.priority = 0
+        axios.put(`http://localhost:8888/task/${this.session.username}/${taskId}`, {
+          session: this.session,
+          task: {
+            priority: task.priority
+          }
+        }).then((response) => {
+          //Do nothing
+        }).catch((error) => {
+          alert('Houve um erro ao tentar atualizar a tarefa.')
+        })
+      }
+    })
+  },
   changeTaskState(taskId){
     this.tasks.forEach((task, t) => {
       if(task.id == taskId){
-        task.state++;
+        task.state++
         if(task.state >= 3)
           task.state = 0
         axios.put(`http://localhost:8888/task/${this.session.username}/${taskId}`, {
