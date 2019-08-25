@@ -13,8 +13,8 @@ exports.read = (username, taskId, next) => {
             if(results){
                 var task = {
                     id: results[0].id,
-                    title: results[0].nome,
-                    details: results[0].detalhes,
+                    name: results[0].nome,
+                    description: results[0].detalhes,
                     startDate: results[0].dataInicio ? new Date(results[0].dataInicio) : null,
                     endDate: results[0].dataFim ? new Date(results[0].dataFim) : null,
                     priority: results[0].prioridade,
@@ -30,8 +30,8 @@ exports.read = (username, taskId, next) => {
             results.forEach((result, i) => {
                 var task = {
                     id: results[i].id,
-                    title: results[i].nome,
-                    details: results[i].detalhes,
+                    name: results[i].nome,
+                    description: results[i].detalhes,
                     startDate: results[i].dataInicio ? new Date(results[i].dataInicio) : null,
                     endDate: results[i].dataFim ? new Date(results[i].dataFim) : null,
                     priority: results[i].prioridade,
@@ -46,30 +46,33 @@ exports.read = (username, taskId, next) => {
 
 exports.create = (username, task, next) => {
     //Check task object consistency:
-    if(!task.title || isNaN(task.priority) || isNaN(task.status)){
+    if(!task.name || isNaN(task.priority)){
         next(false)
     }
     else{
         //Get task object variables:
-        var name = task.title
-        var details = task.details ? task.details : ''
-        var startDateString = task.startDate ? task.startDate.getTime() : null
-        var endDateString = task.endDate ? task.endDate.getTime() : null
-        var startDate = startDateString ? `${task.startDate.getFullYear()}-
-            ${task.startDate.getMonth()+1}-${task.startDate.getDate()} 
-            ${task.startDate.getHours()}-${task.startDate.getMinutes()}-
-            ${task.startDate.getSeconds()}` : null
-        var endDate = endDateString ? `${task.endDate.getFullYear()}-
-            ${task.endDate.getMonth()+1}-${task.endDate.getDate()} 
-            ${task.endDate.getHours()}-${task.endDate.getMinutes()}-
-            ${task.endDate.getSeconds()}` : null
-        var priority = task.priority
-        var status = task.status
+        console.log(task)
+        var name = task.name
+        var description = task.description ? task.description : ''
+        var startDateString = task.startDate.enabled ? task.startDate.date : null
+        var startDate = task.startDate.enabled ? new Date(startDateString) : null
+        var endDateString = task.endDate.enabled ? task.endDate.date : null
+        var endDate =  task.endDate.enabled ? new Date(endDateString) : null
+        var startDateSQL = task.startDate.enabled ? `"${startDate.getFullYear()}-`+
+            `${startDate.getMonth()+1}-${startDate.getDate()} `+
+            `${startDate.getHours()}-${startDate.getMinutes()}-`+
+            `${startDate.getSeconds()}"` : null
+        var endDateSQL = task.endDate.enabled ? `"${endDate.getFullYear()}-`+
+            `${endDate.getMonth()+1}-${endDate.getDate()} `+
+            `${endDate.getHours()}-${endDate.getMinutes()}-`+
+            `${endDate.getSeconds()}"` : null
+            var priority = task.priority
+        var status = 0
         //Insert into DB:
-        var script = `INSERT INTO tbTarefas(nome, detalhes, dataInicio, 
-            dataFim, dataInicioString, dataFimString, prioridde, estado) 
-        VALUES ('${name}', '${details}', '${startDate}', '${endDate}', 
-        '${startDateString}', '${endDateString}', ${priority}, ${status})`
+        var script = `INSERT INTO tbTarefas(nome, detalhes, dataInicio, `+
+            `dataFim, dataInicioString, dataFimString, prioridade, estado) `+
+        `VALUES ("${name}", "${description}", ${startDateSQL}, ${endDateSQL}, `+
+        `"${startDateString}", "${endDateString}", ${priority}, ${status})`
         DB.con(username).query(script, (err, result, fields)=>{
             if(err){
                 console.log(err)
@@ -83,30 +86,32 @@ exports.create = (username, task, next) => {
     
 }
 
+//-----------ESSA POHA TÁ ERRADA AINDA, TEM Q FAZER IGUAL A DE CIMA----------------
+
 exports.update = (username, newTask, taskId, next) => {
     //Gets new task variables:
     var name = newTask.title ? newTask.title : null
-    var details = newTask.description ? newTask.description : null
+    var description = newTask.description ? newTask.description : null
     var startDateString = newTask.startDate ? newTask.startDate.getTime() : null
-    var startDate = newTask.startDate ? `${newTask.startDate.getFullYear()}-
-        ${newTask.startDate.getMonth()+1}-${newTask.startDate.getDate()} 
-        ${newTask.startDate.getHours()}-${newTask.startDate.getMinutes()}-
-        ${newTask.startDate.getSeconds()}` : null
+    var startDate = newTask.startDate ? `"${startDate.getFullYear()}-
+        ${startDate.getMonth()+1}-${startDate.getDate()} 
+        ${startDate.getHours()}-${startDate.getMinutes()}-
+        ${startDate.getSeconds()}"` : null
     var endDateString = newTask.endDate ? newTask.endDate.getTime() : null
-    var endDate = endDateString ? `${newTask.endDate.getFullYear()}-
-        ${newTask.endDate.getMonth()+1}-${newTask.endDate.getDate()} 
-        ${newTask.endDate.getHours()}-${newTask.endDate.getMinutes()}-
-        ${newTask.endDate.getSeconds()}` : null
+    var endDate = endDateString ? `"${endDate.getFullYear()}-
+        ${endDate.getMonth()+1}-${endDate.getDate()} 
+        ${endDate.getHours()}-${endDate.getMinutes()}-
+        ${endDate.getSeconds()}"` : null
     var priority = newTask.priority !== undefined ? newTask.priority : NaN
     var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
     var script = "UPDATE tbTarefas SET"
-    if(name) script += ` nome = '${name}',`
-    if(details) script = ` detalhes = '${details}',`
+    if(name) script += ` nome = "${name}",`
+    if(description) script = ` detalhes = "${description}",`
     if(startDate) 
-        script += ` dataInicio = '${startDate}', dataInicioString = '${startDateString}',`
+        script += ` dataInicio = ${startDate}, dataInicioString = "${startDateString}",`
     if(endDate)
-        script += ` dataFim = '${endDate}', dataFimString = '${endDateString}',`
+        script += ` dataFim = ${endDate}, dataFimString = "${endDateString}",`
     if(!isNaN(priority)) script += ` prioridade = ${priority},`
     if(!isNaN(state)) script += ` estado = ${state},`
     script = script.slice(0, -1)   //Removes last comma (it's 'sLice', not 'sPLice')

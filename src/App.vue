@@ -22,6 +22,7 @@
     <template v-else>
       <LoginScreen @login="login"/>
     </template>
+    <CreateTaskModal :session="session" @reload-tasks="loadTasks"/>
   </div>
 </template>
 
@@ -52,9 +53,11 @@ body{
 import LoginScreen from './views/LoginScreen.vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import CreateTaskModal from './components/modals/CreateTaskModal.vue'
 
 var components = {
-  LoginScreen
+  LoginScreen,
+  CreateTaskModal
 }
 
 var data = () => {
@@ -62,7 +65,8 @@ var data = () => {
     user: {
       logged: false
     },
-    tasks: []
+    tasks: [],
+    session: {}
   }
 }
 
@@ -111,6 +115,7 @@ var methods = {
           task.endDate = task.endDate ? new Date(task.endDate) : null
         })
         this.tasks = resData.taskList
+        console.log(this.tasks)
       }
     })
     .catch((error) => {

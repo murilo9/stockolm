@@ -15,7 +15,7 @@
         </a>
         <a href='' onclick="event.preventDefault()"
         class="title nine wide column">
-            {{task.title}}
+            <span>{{task.name}}</span>
         </a>
         <a href='' onclick="event.preventDefault()"
         class="priority one wide column">
@@ -23,11 +23,11 @@
         </a>
         <a href='' onclick="event.preventDefault()"
         class="date start-date two wide column">
-            {{task.startDate ? getStartDate : '-'}}
+            <span>{{task.startDate ? getStartDate : '-'}}</span>
         </a>
         <a href='' onclick="event.preventDefault()"
         class="date end-date two wide column">
-            {{task.endDate ? getEndDate : '-'}}
+            <span>{{task.endDate ? getEndDate : '-'}}</span>
         </a>
         <a href='' onclick="event.preventDefault()"
         class="delete end-date one wide column"
@@ -114,7 +114,11 @@ export default {
             width: 100%;
             padding: 0.5em;
             display: flex !important;
-            align-items: center;
+            justify-content: center;
+            &.title{
+                justify-content: end;
+                padding-left: 0 !important;
+            }
         }
         .state{
             text-align: center;

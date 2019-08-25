@@ -17,11 +17,14 @@ router.get('/task/:user/:id', () => {
     })
 })
 
-//POST for task
+/**
+ * POST for Tasks
+ * req.body: {task: {name, description, startDate, endDate, priority}, session: {username, hash}}
+ */
 router.post('/task/:user', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
-            Task.create(req.params.user, req.task, (success) => {
+            Task.create(req.params.user, req.body.task, (success) => {
                 if(success){
                     res.end()
                 }
@@ -36,7 +39,11 @@ router.post('/task/:user', (req, res) => {
     })
 })
 
-//PUT for task
+/*
+* PUT for Task
+* req.params: user, id
+* req.body: {session: {username, hash}}
+*/
 router.put('/task/:user/:id', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
         if(authenticated){
@@ -60,7 +67,11 @@ router.put('/task/:user/:id', (req, res) => {
     })
 })
 
-//DELETE for task
+/*
+*DELETE for task
+* req.params: user, hash, url
+* req.body: {session: {username, hash}}
+*/
 router.delete('/task/:user/:hash/:id', (req, res) => {
     req.body.session = {
         username: req.params.user,

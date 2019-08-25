@@ -1,19 +1,31 @@
 <template>
   <div class="tasks">
     <h1>Tarefas</h1>
-    <div class="task-list ui grid">
+    <div class="task-list ui grid" v-if="tasks.length">
       <div class="task row header">
-        <div class="one wide column"></div>
-        <div class="task-header ten wide column">Tarefa</div>
+        <div class="one wide column"> </div>
+        <div class="task-header nine wide column">Tarefa</div>
         <div class="one wide column">Prior.</div>
         <div class="two wide column">Início</div>
         <div class="two wide column">Fim</div>
+        <div class="one wide column"> </div>
       </div>
       <Task v-for="(task, t) in tasks" 
       :key="t" 
       :task="task" 
       @change-state="changeState"
       @delete-task="deleteTask"/>
+    </div>
+    <div class="tasks-list-empty" v-else>
+      <h3>Não há tarefas</h3>
+    </div>
+    <div class="create-task ui grid">
+      <a href="" 
+      onclick="event.preventDefault()" 
+      @click="openCreateTaskModal"
+      class="sixteen wide column">
+        <i class="plus icon"></i>
+      </a>
     </div>
   </div>
 </template>
@@ -26,6 +38,7 @@
       color: #444;
       text-align: left;
       width: 100%;
+      margin: 0;
       .row{
         &.header{
           font-weight: bold;
@@ -37,6 +50,27 @@
         }
         .task-header{
           text-align: left;
+        }
+      }
+    }
+    .task-list-empty{
+      margin: 2em 0;
+    }
+    .create-task{
+      margin: 1em 0;
+      a{
+        border: 1px solid white;
+        padding: 0.2em !important;
+        text-decoration: none;
+        &:hover{
+          background: white;
+          i{
+            color: #1ac4aa;
+          }
+        }
+        i{
+          color: white;
+          font-size: 1.5em;
         }
       }
     }
@@ -65,6 +99,9 @@ var methods = {
     .catch((error) => {
       alert(error)
     })
+  },
+  openCreateTaskModal(){
+    this.$modal.show('create-task-modal')
   }
 }
 

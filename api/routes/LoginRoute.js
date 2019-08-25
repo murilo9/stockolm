@@ -10,7 +10,7 @@ router.post('/login', (req, res) => {
     Users(req, res, (user) => {
         if(user){   //Se o login foi bem-sucedido
             var expireDate = new Date()
-            expireDate.setMinutes(expireDate.getMinutes()+15)
+            expireDate.setMinutes(expireDate.getMinutes()+60)
             //Gera a session:
             const session = {
                 hash: HashGen(32),
