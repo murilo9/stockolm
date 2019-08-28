@@ -3,16 +3,20 @@
     <template v-if="user.logged">
       <div id="nav">
           <router-link :to="{path: '/agenda#month', params: {session: session ? session : ''}}">
-            Agenda
-          </router-link> |
+            <p><i class="calendar alternate outline icon"></i></p>
+            <p>Agenda</p>
+          </router-link>
           <router-link :to="{path: '/tarefas', params: {session: session ? session : ''}}">
-            Tarefas
-          </router-link> |
+            <p><i class="edit outline outline icon"></i></p>
+            <p>Tarefas</p>
+          </router-link>
           <router-link :to="{path: '/projetos', params: {session: session ? session : ''}}">
-            Projetos
-          </router-link> |
+            <p><i class="lemon outline icon"></i></p>
+            <p>Projetos</p>
+          </router-link>
           <a href='#' onclick="event.preventDefault()" @click="logout">
-            Logout
+            <p><i class="sign-out icon"></i></p>
+            <p>Logout</p>
           </a>
       </div>
       <router-view :tasks="tasks" :session="session ? session : null"
@@ -40,11 +44,17 @@ body{
 }
 #nav {
   padding: 30px;
+  display: flex;
+  justify-content: center;
   a {
     font-weight: bold;
     color: #2c3e50;
     &.router-link-exact-active {
       color: white;
+    }
+    margin: 0 1em;
+    i{
+      font-size: 2em;
     }
   }
 }
@@ -115,7 +125,6 @@ var methods = {
           task.endDate = task.endDate ? new Date(task.endDate) : null
         })
         this.tasks = resData.taskList
-        console.log(this.tasks)
       }
     })
     .catch((error) => {

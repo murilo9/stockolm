@@ -4,8 +4,7 @@
         :project="projects[getProjectIndex($route.params.id)]" 
         v-if="$route.params.id"/>
         <div class="projects-dashboard" v-else>
-            <h1 class="fa-center" v-if="projects">Projetos</h1>
-            <h2 v-else>Não há projetos</h2>
+            <h2 v-if="!projects">Não há projetos</h2>
             <div class="projects-list">
                 <a href='#'
                 onclick='event.preventDefault()'

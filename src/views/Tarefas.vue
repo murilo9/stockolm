@@ -1,14 +1,13 @@
 <template>
   <div class="tasks">
-    <h1>Tarefas</h1>
     <div class="task-list ui grid" v-if="tasks.length">
       <div class="task row header">
-        <div class="one wide column"> </div>
+        <div class="one wide column"><i class="edit outline icon"></i></div>
         <div class="task-header nine wide column">Tarefa</div>
         <div class="one wide column">Prior.</div>
         <div class="two wide column">Início</div>
         <div class="two wide column">Fim</div>
-        <div class="one wide column"> </div>
+        <div class="one wide column"><i class="trash alternate icon"></i></div>
       </div>
       <Task v-for="(task, t) in tasks" 
       :key="t" 
@@ -63,6 +62,7 @@
         border: 1px solid white;
         padding: 0.2em !important;
         text-decoration: none;
+        padding: 0.3em;
         &:hover{
           background: white;
           i{

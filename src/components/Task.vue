@@ -14,8 +14,10 @@
             </template>
         </a>
         <a href='' onclick="event.preventDefault()"
-        class="title nine wide column">
-            <span>{{task.name}}</span>
+        class="title nine wide column"
+        @click="active = !active">
+            <p>{{task.name}}</p>
+            <p v-if="active" class="description">{{task.description}}</p>
         </a>
         <a href='' onclick="event.preventDefault()"
         @click="changePriority"
@@ -47,7 +49,7 @@
 <script>
 var data = function(){
     return {
-
+        active: false
     }
 }
 
@@ -131,14 +133,18 @@ export default {
             width: 100%;
             padding: 0.5em;
             display: flex !important;
-            justify-content: center;
+            flex-direction: column;
             &.title{
-                justify-content: end;
+                color: #0fab93;
+                justify-content: center;
                 padding-left: 0 !important;
             }
             &.date{
                 padding-left: 0 !important;
                 padding-right: 0 !important;
+            }
+            .description{
+                color: #666;
             }
         }
         .state{
