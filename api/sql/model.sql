@@ -51,4 +51,4 @@ CREATE TABLE tbUsuarios(
     username VARCHAR(30) NOT NULL,
     senha VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
-) engine = inodb;
+) engine = innodb;

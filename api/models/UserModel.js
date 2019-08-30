@@ -6,8 +6,12 @@ exports.get = (username, password, next) => {
         if(err){
             next(false)
         }
-        if(result[0].senha == password)
-            next(true)
+        if(result){
+            if(result[0].senha == password)
+                next(true)
+            else
+                next(false)
+        }
         else
             next(false)
     })

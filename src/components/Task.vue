@@ -144,7 +144,7 @@ export default {
                 padding-right: 0 !important;
             }
             .description{
-                color: #666;
+                color: hsl(220, 85%, 40%);
             }
         }
         .state{
@@ -161,7 +161,7 @@ export default {
                 color: hsl(50, 90%, 50%);
             }
             ._2{
-                color: hsl(0, 80%, 50%);
+                color: hsl(0, 60%, 60%);
             }
         }
         .date{

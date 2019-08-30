@@ -29,7 +29,7 @@ p{
   h3{
     margin-top: 0;
   }
-  margin: 0 20%;
+  padding: 10em 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,56 +61,13 @@ var data = () => {
           months: []
         }
       ]
-    },
-    tasks: [
-      {
-        title: 'Programar site do Stockolm',
-        startDate: new Date('July 01, 2019'),
-        endDate: undefined,
-        priority: 1,
-        status: 0
-      },
-      {
-        title: 'Programar o sistema do Stockolm',
-        startDate: undefined,
-        endDate: undefined,
-        priority: 1,
-        status: 1
-      },
-      {
-        title: 'Fazer coisa que começa e termina no mesmo dia',
-        startDate: new Date('June 23, 2019'),
-        endDate: new Date('June 23, 2019'),
-        priority: 1,
-        status: 1
-      },
-      {
-        title: 'Fazer fucking tarefa de libras',
-        startDate: new Date('June 28, 2019'),
-        endDate: new Date('June 28, 2019'),
-        priority: 3,
-        status: 0
-      },
-      {
-        title: 'Estudar libras',
-        startDate: undefined,
-        endDate: new Date('June 27, 2019'),
-        priority: 2,
-        status: 0
-      },
-      {
-        title: 'Estudar libras',
-        startDate: undefined,
-        endDate: new Date('June 22, 2019'),
-        priority: 1,
-        status: 0
-      }
-    ]
+    }
   }
 }
 
 var methods ={
   generateCalendar(){
+    console.log('generateCalendar')
     var today = new Date()
     var baseDate = new Date()
     baseDate.setDate(1)
@@ -166,7 +123,7 @@ var methods ={
               dayFullYearCounter++
               weekDay.task = false   //A princípio, o dia não tem tarefas
               //Verifica se o dia possui tarefas (percorre o array de tarefas):
-              this.$data.tasks.forEach(function(task, t){
+              this.tasks.forEach(function(task, t){
                 //Se a tarefa inicia e começa no mesmo dia
                 if(task.startDate && task.endDate &&
                 task.startDate.getFullYear() == task.endDate.getFullYear() &&
@@ -179,7 +136,7 @@ var methods ={
                     if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
                         weekDay.task = {  //Insere o objeto de task
                         tasks: 0,
-                        priority: 0
+                        priority: -1
                       }
                     }
                     //Incrementa o número de tarefas:
@@ -197,7 +154,7 @@ var methods ={
                     if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
                         weekDay.task = {  //Insere o objeto de task
                         tasks: 0,
-                        priority: 0
+                        priority: -1
                       }
                     }
                     //Incrementa o número de tarefas:
@@ -215,9 +172,10 @@ var methods ={
                     if(!weekDay.task){    //Se o dia ainda não possuir o objeto task
                         weekDay.task = {  //Insere o objeto de task
                         tasks: 0,
-                        priority: 0
+                        priority: -1
                       }
                     }
+                    console.log(task);
                     //Incrementa o número de tarefas:
                     weekDay.task.tasks++
                     //Define a prioridade das tarefas do dia:
@@ -253,12 +211,14 @@ var components = {
   WeekDay
 }
 
+var props = [
+  'tasks'
+]
+
 export default {
   data: data,
   methods: methods,
   components: components,
-  created(){
-    this.generateCalendar()
-  }
+  props: props
 }
 </script>

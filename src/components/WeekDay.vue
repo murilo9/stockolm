@@ -1,17 +1,18 @@
 <template>
     <a href='#' class="week-day" 
+    onclick="event.preventDefault()"
     :class="{
         'hide': !day.day, 
         'today': day.isToday, 
         'tasks': day.task, 
         'weekend': day.weekEnd,
-        '_1': day.task.priority == 1,
-        '_2': day.task.priority == 2,
-        '_3': day.task.priority == 3
-        }">
+        '_1': day.task ? (day.task.priority == 0) : false,
+        '_2': day.task ? (day.task.priority == 1) : false,
+        '_3': day.task ? (day.task.priority == 2) : false
+    }">
         <template v-if="day.day">
             <p class="number">{{day.day}}</p>
-            <p class="tasks-qty" :class="'_'+day.task.priority">
+            <p class="tasks-qty" :class="'_'+(day.task ? day.task.priority : '')">
                 <template v-if="day.task">
                 {{day.task.tasks}}
                 </template>
@@ -65,7 +66,7 @@ export default {
             justify-content: center;
         }
         &.today{
-            border: 2px solid red !important;
+            border: 2px solid black !important;
             border-radius: 2em;
         }
         &.tasks{
@@ -78,7 +79,7 @@ export default {
             background: hsl(50, 90%, 50%);
         }
         &._3{
-            background: hsl(0, 80%, 50%);
+            background: hsl(0, 72%, 56%);
         }
         &.weekend{
             color: #444;

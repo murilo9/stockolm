@@ -19,7 +19,9 @@
             <p>Logout</p>
           </a>
       </div>
-      <router-view :tasks="tasks" :session="session ? session : null"
+      <router-view ref="view"
+      :tasks="tasks" 
+      :session="session ? session : null"
       @change-task-state="changeTaskState" 
       @change-task-priority="changeTaskPriority"
       @reload-tasks="loadTasks"/>
@@ -43,9 +45,11 @@ body{
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
+  padding: 1.5em;
   display: flex;
   justify-content: center;
+  width: 100%;
+  position: fixed;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -118,13 +122,15 @@ var methods = {
     axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
       var resData = response.data;
+      this.tasks.splice(0, this.tasks.length);
       if(resData.taskList){
         //Inicializa os objetos Date:
         resData.taskList.forEach((task, i) => {
           task.startDate = task.startDate ? new Date(task.startDate) : null
           task.endDate = task.endDate ? new Date(task.endDate) : null
+          this.tasks.push(task);
         })
-        this.tasks = resData.taskList
+        this.$refs.view.generateCalendar();
       }
     })
     .catch((error) => {
