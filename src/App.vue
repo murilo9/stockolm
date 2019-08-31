@@ -50,6 +50,7 @@ body{
   justify-content: center;
   width: 100%;
   position: fixed;
+  background: #1ac4aa;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -134,6 +135,7 @@ var methods = {
       }
     })
     .catch((error) => {
+      alert(error);
       console.log(error);
     })
   },

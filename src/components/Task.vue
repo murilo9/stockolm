@@ -65,14 +65,22 @@ var computed = {
         return d+' '+m;
     },
     getStartHour(){
-        var h = this.task.startDate.getHours()
-        var m = this.task.startDate.getMinutes()
-        return h+':'+m
+        if(this.task.startDate){
+            var h = this.task.startDate.getHours()
+            var m = this.task.startDate.getMinutes()
+            return (h > 9 ? h : '0'+h) +':'+ (m > 9 ? m : '0'+m)
+        }
+        else
+            return ''
     },
     getEndHour(){
-        var h = this.task.endDate.getHours()
-        var m = this.task.endDate.getMinutes()
-        return h+':'+m
+        if(this.task.endDate){
+            var h = this.task.endDate.getHours()
+            var m = this.task.endDate.getMinutes()
+            return (h > 9 ? h : '0'+h) +':'+ (m > 9 ? m : '0'+m)
+        }
+        else
+            return ''
     }
 }
 

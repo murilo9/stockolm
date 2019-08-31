@@ -156,7 +156,7 @@ var methods = {
             this.taskForm.startDate.date.setMonth(this.taskForm.startDate.month)
             this.taskForm.startDate.date.setYear(this.taskForm.startDate.year)
             var time = this.taskForm.startDate.timeString
-            if(time){
+            if(time != ''){
                 this.taskForm.startDate.date.setHours(
                     time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2)
                 )

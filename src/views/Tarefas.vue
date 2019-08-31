@@ -33,7 +33,7 @@
 <style lang="scss" scoped>
   .tasks{
     color: white;
-    margin: 0 20%;
+    padding: 10em 20%;
     .task-list{
       color: #444;
       text-align: left;
