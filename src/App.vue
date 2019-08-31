@@ -131,11 +131,11 @@ var methods = {
           task.endDate = task.endDate ? new Date(task.endDate) : null
           this.tasks.push(task);
         })
-        this.$refs.view.generateCalendar();
+        if(this.$refs.view)
+          this.$refs.view.generateCalendar();
       }
     })
     .catch((error) => {
-      alert(error);
       console.log(error);
     })
   },
