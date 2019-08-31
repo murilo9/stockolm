@@ -2,6 +2,9 @@
   <div id="app">
     <template v-if="user.logged">
       <div id="nav">
+        <p class="date-label">
+          <a href='' onclick="event.preventDefault()">{{getDateLabel}}</a>
+        </p>
           <router-link :to="{path: '/agenda#month', params: {session: session ? session : ''}}">
             <p><i class="calendar alternate outline icon"></i></p>
             <p>Agenda</p>
@@ -45,12 +48,13 @@ body{
   color: #2c3e50;
 }
 #nav {
-  padding: 1.5em;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   width: 100%;
   position: fixed;
   background: #1ac4aa;
+  padding-bottom: 1.5em;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -62,6 +66,17 @@ body{
       font-size: 2em;
     }
   }
+  .date-label{
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+    a{
+      width: 50%;
+      font-size: 1.2em;
+      padding: 0.3em;
+      color: white;
+    }
+  }
 }
 </style>
 
@@ -70,6 +85,7 @@ import LoginScreen from './views/LoginScreen.vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import CreateTaskModal from './components/modals/CreateTaskModal.vue'
+import { setInterval } from 'timers';
 
 var components = {
   LoginScreen,
@@ -82,7 +98,22 @@ var data = () => {
       logged: false
     },
     tasks: [],
-    session: {}
+    session: {},
+    now: new Date(),
+    nowInterval: ''
+  }
+}
+
+var computed = {
+  getDateLabel: function(){
+    const months = ['Jan(01)', 'Fev(02)', 'Mar(03)', 'Abr(04)', 'Maio(05)', 'Jun(06)',
+                    'Jul(07)', 'Ago(08)', 'Set(09)', 'Out(10)', 'Nov(11)', 'Dez(12)']
+    var day = this.now.getDate();
+    var month = this.now.getMonth()+1;
+    var year = this.now.getFullYear();
+    var hour = this.now.getHours();
+    var min = this.now.getMinutes();
+    return day+' '+months[month]+' de '+year+' - '+(hour > 9 ? hour : '0'+hour)+':'+(min > 9 ? min : '0'+min)
   }
 }
 
@@ -176,11 +207,15 @@ var methods = {
         })
       }
     })
+  },
+  refreshDateNow(){
+    this.now = new Date()
   }
 }
 
 export default {
   components: components,
+  computed: computed,
   data: data,
   methods: methods,
   watch: {
@@ -198,6 +233,7 @@ export default {
         this.loadTasks()
       }
     }
+    this.nowInterval = setInterval(this.refreshDateNow, 60000)
   }
 }
 </script>
