@@ -1,6 +1,6 @@
 <template>
   <div class="agenda">
-    <h1>Agenda</h1>
+    <h1 class="title">Agenda</h1>
     <div v-for="(month, m) in calendar.years[0].months" :key="m" class="month">
       <a v-if="month.actual" id="month"></a>
       <h3>{{month.name}}</h3>
@@ -23,13 +23,18 @@ p{
   margin: 0;
 }
 .agenda{
+  height: 80%;
+  overflow-y: scroll;
   a{
     color: inherit;
   }
   h3{
     margin-top: 0;
   }
-  padding: 10em 20%;
+  .title{
+    line-height: 0;
+  }
+  padding: 1em 20%;
   display: flex;
   flex-direction: column;
   align-items: center;

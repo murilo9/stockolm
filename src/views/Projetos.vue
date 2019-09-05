@@ -38,6 +38,8 @@
     .projects{
         padding: 0 10%;
         text-align: left;
+        height: 80%;
+        overflow-y: scroll;
         .projects-dashboard{
             color: white;
             .projects-list{

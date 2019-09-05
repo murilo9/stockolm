@@ -46,13 +46,14 @@ body{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 #nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  position: fixed;
+  height: 20%;
   background: #1ac4aa;
   padding-bottom: 1.5em;
   a {

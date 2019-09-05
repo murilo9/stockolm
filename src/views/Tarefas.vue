@@ -33,7 +33,9 @@
 <style lang="scss" scoped>
   .tasks{
     color: white;
-    padding: 10em 20%;
+    padding: 1em 20%;
+    height: 80%;
+    overflow-y: scroll;
     .task-list{
       color: #444;
       text-align: left;

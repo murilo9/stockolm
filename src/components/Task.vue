@@ -152,7 +152,7 @@ export default {
                 padding-right: 0 !important;
             }
             .description{
-                color: hsl(220, 85%, 40%);
+                color: #444;
             }
         }
         .state{
