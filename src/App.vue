@@ -180,6 +180,7 @@ var methods = {
         axios.put(`http://localhost:8888/task/${this.session.username}/${taskId}`, {
           session: this.session,
           task: {
+            id: taskId,
             priority: task.priority
           }
         }).then((response) => {
@@ -199,6 +200,7 @@ var methods = {
         axios.put(`http://localhost:8888/task/${this.session.username}/${taskId}`, {
           session: this.session,
           task: {
+            id: taskId,
             state: task.state
           }
         }).then((response) => {
