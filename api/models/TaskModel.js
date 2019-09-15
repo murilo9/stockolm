@@ -94,7 +94,7 @@ exports.create = (username, task, next) => {
 
 exports.update = (username, newTask, next) => {
     //Gets new task variables:
-    var name = newTask.title ? newTask.title : null
+    var name = newTask.name ? newTask.name : null
     var description = newTask.description ? newTask.description : null
     var startDateString = newTask.startDate ? newTask.startDate.getTime() : null
     var startDate = newTask.startDate ? `"${startDate.getFullYear()}-
