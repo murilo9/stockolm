@@ -7,14 +7,15 @@
         <div class="one wide column">Prior.</div>
         <div class="two wide column">Início</div>
         <div class="two wide column">Fim</div>
-        <div class="one wide column"><i class="trash alternate icon"></i></div>
+        <div class="one wide column">Ações</div>
       </div>
       <Task v-for="(task, t) in tasks" 
       :key="t" 
-      :task="task" 
+      :taskData="task" 
       @change-state="changeState"
       @change-priority="changePriority"
-      @delete-task="deleteTask"/>
+      @delete-task="deleteTask"
+      @update-task="updateTask"/>
     </div>
     <div class="tasks-list-empty" v-else>
       <h3>Não há tarefas</h3>
@@ -33,7 +34,7 @@
 <style lang="scss" scoped>
   .tasks{
     color: white;
-    padding: 1em 20%;
+    padding: 1em 15%;
     height: 80%;
     overflow-y: scroll;
     .task-list{
@@ -91,6 +92,18 @@ var data = () => {
 }
 
 var methods = {
+  updateTask (task){
+    axios.put(`http://localhost:8888/task/${this.session.username}/${task.id}`,{
+      session: this.session,
+      task: task
+    })
+    .then((response) => {
+      this.$emit('reload-tasks')
+    })
+    .catch((error) => {
+      alert(error)
+    })
+  },
   changeState (taskId){
     this.$emit('change-task-state', taskId)
   },

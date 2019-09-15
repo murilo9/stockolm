@@ -92,9 +92,7 @@ exports.create = (username, task, next) => {
     
 }
 
-//-----------ESSA POHA TÁ ERRADA AINDA, TEM Q FAZER IGUAL A DE CIMA----------------
-
-exports.update = (username, newTask, taskId, next) => {
+exports.update = (username, newTask, next) => {
     //Gets new task variables:
     var name = newTask.title ? newTask.title : null
     var description = newTask.description ? newTask.description : null
@@ -109,17 +107,17 @@ exports.update = (username, newTask, taskId, next) => {
         ${endDate.getHours()}-${endDate.getMinutes()}-
         ${endDate.getSeconds()}"` : null
     if(newTask.startDate !== undefined)
-        var hasStartTime = newTask.startDate.hasStartTime !== undefined ? 
-        newTask.startDate.hasStartTime : null
+        var hasStartTime = newTask.hasStartTime ? 
+        "true" : "false"
     if(newTask.endDate !== undefined)
-        var hasEndTime = newTask.endDate.hasEndTime !== undefined ? 
-        newTask.endDate.hasEndTime : null
+        var hasEndTime = newTask.hasEndTime ? 
+        "true" : "false"
     var priority = newTask.priority !== undefined ? newTask.priority : NaN
     var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
     var script = "UPDATE tbTarefas SET"
     if(name) script += ` nome = "${name}",`
-    if(description) script = ` detalhes = "${description}",`
+    if(description) script += ` detalhes = "${description}",`
     if(startDate) 
         script += ` dataInicio = ${startDate}, dataInicioString = "${startDateString}",`
     if(endDate)
@@ -131,7 +129,8 @@ exports.update = (username, newTask, taskId, next) => {
     if(!isNaN(priority)) script += ` prioridade = ${priority},`
     if(!isNaN(state)) script += ` estado = ${state},`
     script = script.slice(0, -1)   //Removes last comma (it's 'sLice', not 'sPLice')
-    script += ` WHERE id = ${taskId}`
+    script += ` WHERE id = ${newTask.id}`
+    console.log('script = '+script)
     DB.con(username).query(script, (err, result, fields)=>{
         if(err){
             console.log(err)

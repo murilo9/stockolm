@@ -42,7 +42,7 @@ router.post('/task/:user', (req, res) => {
 /*
 * PUT for Task
 * req.params: user, id
-* req.body: {session: {username, hash}}
+* req.body: {session: {username, hash}, task}
 */
 router.put('/task/:user/:id', (req, res) => {
     Auth(req, res, (authenticated) => {     //If session is active
@@ -51,7 +51,7 @@ router.put('/task/:user/:id', (req, res) => {
                 res.status(400).send('invalid_id')
             }
             else{
-                Task.update(req.params.user, req.body.task, req.params.id, (updated) =>{
+                Task.update(req.params.user, req.body.task, (updated) =>{
                     if(updated){
                         res.end()
                     }

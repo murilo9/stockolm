@@ -13,11 +13,16 @@
                 <i class="ellipsis horizontal icon"></i>
             </template>
         </a>
+        <div class="title editing nine wide column" v-if="editing">
+            <input type="text" v-model="task.name" class="title">
+            <textarea v-model="task.description" class="description" rows="3"></textarea>
+        </div>
         <a href='' onclick="event.preventDefault()"
         class="title nine wide column"
-        @click="active = !active">
+        @click="active = !active"
+        v-else>
             <p>{{task.name}}</p>
-            <p v-if="active" class="description">{{task.description}}</p>
+            <p v-if="active && task.description" class="description">{{task.description}}</p>
         </a>
         <a href='' onclick="event.preventDefault()"
         @click="changePriority"
@@ -38,31 +43,54 @@
                 {{task.hasEndTime ? getEndHour : ''}}
             </span>
         </a>
-        <a href='' onclick="event.preventDefault()"
-        class="delete end-date one wide column"
-        @click="deleteTask">
-            <i class="x icon"></i>
-        </a>
+        <div class="buttons one wide column">
+            <template v-if="editing">
+                <a href='' onclick="event.preventDefault()"
+                class="save"
+                @click="saveTask">
+                    <i class="save icon"></i>
+                </a>
+                <a href='' onclick="event.preventDefault()"
+                class="cancel"
+                @click="cancelChanges">
+                    <i class="x icon"></i>
+                </a>
+            </template>
+            <template v-else>
+                <a href='' onclick="event.preventDefault()"
+                class="edit"
+                @click="editTask">
+                    <i class="pencil icon"></i>
+                </a>
+                <a href='' onclick="event.preventDefault()"
+                class="delete"
+                @click="deleteTask">
+                    <i class="trash alternate icon"></i>
+                </a>
+            </template>
+        </div>
     </div>
 </template>
 
 <script>
 var data = function(){
     return {
-        active: false
+        task: {},
+        active: false,      //If true, shows task description
+        editing: false      //If true, allows editing os task's atributes
     }
 }
 
 var computed = {
     getStartDate(){
-        var m = this.getMonthLabel('start');
-        var d = this.task.startDate.getDate();
-        return d+' '+m;
+        var m = this.getMonthLabel('start')
+        var d = this.task.startDate.getDate()
+        return d+' '+m
     },
     getEndDate(){
-        var m = this.getMonthLabel('end');
-        var d = this.task.endDate.getDate();
-        return d+' '+m;
+        var m = this.getMonthLabel('end')
+        var d = this.task.endDate.getDate()
+        return d+' '+m
     },
     getStartHour(){
         if(this.task.startDate){
@@ -110,22 +138,37 @@ var methods = {
     changePriority(){
         this.$emit('change-priority', this.task.id)
     },
-    changeState: function(){
+    changeState(){
         this.$emit('change-state', this.task.id)
     },
-    deleteTask: function(){
+    deleteTask(){
         this.$emit('delete-task', this.task.id)
+    },
+    editTask(){
+        this.taskBeforeChange = this.task
+        this.editing = !this.editing
+    },
+    saveTask(){
+        this.$emit('update-task', this.task)
+        this.editing = false
+    },
+    cancelChanges(){
+        this.task = this.taskBeforeChange
+        this.editing = false
     }
 }
 
 var props = [
-    'task'
+    'taskData'
 ]
 export default {
     data: data,
     methods: methods,
     computed: computed,
-    props: props
+    props: props,
+    mounted(){
+        this.task = this.taskData
+    }
 }
 </script>
 
@@ -142,17 +185,39 @@ export default {
             padding: 0.5em;
             display: flex !important;
             flex-direction: column;
-            &.title{
-                color: #0fab93;
-                justify-content: center;
-                padding-left: 0 !important;
-            }
             &.date{
                 padding-left: 0 !important;
                 padding-right: 0 !important;
             }
+        }
+        .title{
+            color: #0c8674;
+            justify-content: center;
+            padding-left: 0 !important;
+            p{
+                margin-bottom: 0;
+            }
+            &.editing{
+                display: flex;
+                flex-direction: column;
+                padding: 0.5em;
+                input[type=text]{
+                    border: none;
+                    padding: 0.5em !important;
+                    outline: none;
+                }
+                textarea{
+                    border-right: none;
+                    border-top: none;
+                    border-bottom: none;
+                    outline: none;
+                    margin-left: 0.5em;
+                    resize: none;
+                }
+            }
             .description{
                 color: #444;
+                margin-top: 0.5em;
             }
         }
         .state{
@@ -175,8 +240,21 @@ export default {
         .date{
             text-align: center;
         }
-        .delete{
-            color: crimson;
+        .buttons{
+            padding: 0 !important;
+            display: flex !important;
+            flex-direction: row;
+            align-items: center;
+            a{
+                padding: 0;
+                color: #0c8674;
+            }
+            .delete{
+                color: #444;
+            }
+            .cancel{
+                color: crimson;
+            }
         }
     }
 </style>
