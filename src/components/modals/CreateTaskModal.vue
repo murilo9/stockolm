@@ -126,19 +126,18 @@ var data = () => {
             startDate: {
                 enabled: false,
                 date: {},
-                day: 15,
-                month: 0,
-                year: 2019,
+                day: new Date().getDate(),
+                month: new Date().getMonth(),
+                year: new Date().getFullYear(),
                 timeString: '',
                 hasTime: false
             },
             endDate: {
                 enabled: false,
                 date: {},
-                day: 15,
-                month: 0,
-                year: 2019,
-                hour: 12,
+                day: new Date().getDate(),
+                month: new Date().getMonth(),
+                year: new Date().getFullYear(),
                 timeString: '',
                 hasTime: false
             },
@@ -191,14 +190,35 @@ var methods = {
         })
         .then((response) => {
             this.$emit('reload-tasks')
+            this.closeModal()
         })
         .catch((error) => {
             alert(error)
         })
     },
     beforeOpen(){
-        for(var i = 0; i < 11; i++){
-
+        this.taskForm = {
+            name: '',
+            description: '',
+            startDate: {
+                enabled: false,
+                date: {},
+                day: new Date().getDate(),
+                month: new Date().getMonth(),
+                year: new Date().getFullYear(),
+                timeString: '',
+                hasTime: false
+            },
+            endDate: {
+                enabled: false,
+                date: {},
+                day: new Date().getDate(),
+                month: new Date().getMonth(),
+                year: new Date().getFullYear(),
+                timeString: '',
+                hasTime: false
+            },
+            priority: 0
         }
     },
     closeModal(){

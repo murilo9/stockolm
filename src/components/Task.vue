@@ -243,7 +243,7 @@ var methods = {
     },
     editTask(){
         this.taskBeforeChange = this.task
-        this.editing = !this.editing
+        this.editing = true
     },
     saveTask(){
         this.$emit('update-task', this.taskForm)

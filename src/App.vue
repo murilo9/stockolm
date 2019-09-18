@@ -27,6 +27,7 @@
       :session="session ? session : null"
       @change-task-state="changeTaskState" 
       @change-task-priority="changeTaskPriority"
+      @delete-task="deleteTask"
       @reload-tasks="loadTasks"/>
     </template>
     <template v-else>
@@ -151,21 +152,37 @@ var methods = {
     else
       return false
   },
+  deleteTask(taskId){
+    axios.delete(`http://localhost:8888/task/${this.session.username}/${this.session.hash}/${taskId}`)
+    .then((response) => {
+      this.loadTasks()
+    })
+    .catch((error) => {
+      alert(error)
+    })
+  },
   loadTasks(){    //Carrega todas as tarefas do servidor:
     axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
       var resData = response.data
+      console.log('loadTasks')
       console.log(resData)
-      this.tasks.splice(1, this.tasks.length)
-      if(resData.taskList){
+      if(this.tasks.length > 0){
+        this.tasks =[]
+      }
+      if(resData.taskList.length){
+        resData.taskList.forEach((task, t) => {
+          this.tasks.push(task)
+        })
         //Inicializa os objetos Date:
-        resData.taskList.forEach((task, i) => {
+        this.tasks.forEach((task, i) => {
           task.startDate = task.startDate ? new Date(task.startDate) : null
           task.endDate = task.endDate ? new Date(task.endDate) : null
-          this.tasks.push(task);
+          
         })
+        console.log(tasks)
         if(this.$refs.view)
-          this.$refs.view.generateCalendar();
+          this.$refs.view.generateCalendar()
       }
     })
     .catch((error) => {

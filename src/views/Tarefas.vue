@@ -9,8 +9,8 @@
         <div class="two wide column">Fim</div>
         <div class="one wide column">Ações</div>
       </div>
-      <Task v-for="(task, t) in tasks" 
-      :key="t" 
+      <Task v-for="task in tasks" 
+      :key="task.id" 
       :taskData="task" 
       @change-state="changeState"
       @change-priority="changePriority"
@@ -115,13 +115,7 @@ var methods = {
     this.$emit('change-task-priority', taskId)
   },
   deleteTask(taskId){
-    axios.delete(`http://localhost:8888/task/${this.session.username}/${this.session.hash}/${taskId}`)
-    .then((response) => {
-      this.$emit('reload-tasks')
-    })
-    .catch((error) => {
-      alert(error)
-    })
+    this.$emit('delete-task', taskId)
   },
   openCreateTaskModal(){
     this.$modal.show('create-task-modal')
