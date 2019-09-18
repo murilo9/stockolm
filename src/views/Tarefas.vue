@@ -32,6 +32,9 @@
 </template>
 
 <style lang="scss" scoped>
+  #draggable{
+    display: contents;
+  }
   .tasks{
     color: white;
     padding: 1em 15%;
@@ -82,8 +85,9 @@
 </style>
 
 <script>
-import Task from '../components/Task.vue';
-import axios from 'axios';
+import Task from '../components/Task.vue'
+import axios from 'axios'
+import draggable from 'vuedraggable'
 
 var data = () => {
   return {
@@ -92,10 +96,10 @@ var data = () => {
 }
 
 var methods = {
-  updateTask (task){
-    axios.put(`http://localhost:8888/task/${this.session.username}/${task.id}`,{
+  updateTask (taskForm){
+    axios.put(`http://localhost:8888/task/${this.session.username}/${taskForm.id}`,{
       session: this.session,
-      task: task
+      task: taskForm
     })
     .then((response) => {
       this.$emit('reload-tasks')
@@ -130,7 +134,8 @@ var props = {
 }
 
 var components = {
-  Task
+  Task,
+  draggable
 }
 
 

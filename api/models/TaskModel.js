@@ -96,22 +96,53 @@ exports.update = (username, newTask, next) => {
     //Gets new task variables:
     var name = newTask.name ? newTask.name : null
     var description = newTask.description ? newTask.description : null
-    var startDateString = newTask.startDate ? newTask.startDate.getTime() : null
-    var startDate = newTask.startDate ? `"${startDate.getFullYear()}-
-        ${startDate.getMonth()+1}-${startDate.getDate()} 
-        ${startDate.getHours()}-${startDate.getMinutes()}-
-        ${startDate.getSeconds()}"` : null
-    var endDateString = newTask.endDate ? newTask.endDate.getTime() : null
-    var endDate = endDateString ? `"${endDate.getFullYear()}-
-        ${endDate.getMonth()+1}-${endDate.getDate()} 
-        ${endDate.getHours()}-${endDate.getMinutes()}-
-        ${endDate.getSeconds()}"` : null
-    if(newTask.startDate !== undefined)
-        var hasStartTime = newTask.hasStartTime ? 
-        "true" : "false"
-    if(newTask.endDate !== undefined)
-        var hasEndTime = newTask.hasEndTime ? 
-        "true" : "false"
+
+    if(newTask.startDate.enabled){
+        var date = new Date()
+        date.setFullYear(newTask.startDate.year)
+        date.setMonth(newTask.startDate.month)
+        date.setDate(newTask.startDate.day)
+        var hasStartTime = newTask.startDate.hasTime
+        if(newTask.startDate.hasTime){
+            var time = newTask.startDate.time
+            date.setHours(time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2))
+            date.setMinutes(time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5))
+        }
+        var startDate = `"${date.getFullYear()}-`+
+            `${date.getMonth()+1}-${date.getDate()} `+
+            `${date.getHours()}-${date.getMinutes()}-`+
+            `${date.getSeconds()}"`
+        var startDateString =  date.getTime()
+    }
+    else{
+        var startDate = null
+        var startDateString = null
+        var hasStartTime = false
+    }
+
+    if(newTask.endDate.enabled){
+        var date = new Date()
+        date.setFullYear(newTask.endDate.year)
+        date.setMonth(newTask.endDate.month)
+        date.setDate(newTask.endDate.day)
+        var hasEndTime = newTask.endDate.hasTime
+        if(newTask.endDate.hasTime){
+            var time = newTask.endDate.time
+            date.setHours(time.charAt(1) == ':' ? time.substring(0,1) : time.substring(0,2))
+            date.setMinutes(time.charAt(1) == ':' ? time.substring(2,4) : time.substring(3,5))
+        }
+        var endDate = `"${date.getFullYear()}-`+
+            `${date.getMonth()+1}-${date.getDate()} `+
+            `${date.getHours()}-${date.getMinutes()}-`+
+            `${date.getSeconds()}"`
+        var endDateString =  date.getTime()
+    }
+    else{
+        var endDate = null
+        var endDateString = null
+        var hasEndTime = false
+    }
+
     var priority = newTask.priority !== undefined ? newTask.priority : NaN
     var state = newTask.state !== undefined ? newTask.state : NaN
     //Update into DB:
@@ -122,10 +153,8 @@ exports.update = (username, newTask, next) => {
         script += ` dataInicio = ${startDate}, dataInicioString = "${startDateString}",`
     if(endDate)
         script += ` dataFim = ${endDate}, dataFimString = "${endDateString}",`
-    if(hasStartTime !== undefined)
-        script += ` possuiHoraInicio = ${hasStartTime},`
-    if(hasEndTime !== undefined)
-        script += ` possuiHoraFim = ${hasEndTime},`
+    script += ` possuiHoraInicio = ${hasStartTime},`
+    script += ` possuiHoraFim = ${hasEndTime},`
     if(!isNaN(priority)) script += ` prioridade = ${priority},`
     if(!isNaN(state)) script += ` estado = ${state},`
     script = script.slice(0, -1)   //Removes last comma (it's 'sLice', not 'sPLice')

@@ -154,8 +154,9 @@ var methods = {
   loadTasks(){    //Carrega todas as tarefas do servidor:
     axios.get(`http://localhost:8888/task/${this.session.username}`)
     .then((response) => {
-      var resData = response.data;
-      this.tasks.splice(0, this.tasks.length);
+      var resData = response.data
+      console.log(resData)
+      this.tasks.splice(1, this.tasks.length)
       if(resData.taskList){
         //Inicializa os objetos Date:
         resData.taskList.forEach((task, i) => {
